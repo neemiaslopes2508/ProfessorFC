@@ -11,4 +11,7 @@ const identities: Readonly<Record<string, ClubIdentity>> = {
   'dev-club-6': { primaryColor: '#efde94', secondaryColor: '#415747', crestPath: '/crests/serra.svg' },
 }
 const fallback: ClubIdentity = { primaryColor: '#c0cbd2', secondaryColor: '#303c46' }
-export function clubIdentity(id: ClubId): ClubIdentity { return identities[id] ?? fallback }
+export function clubIdentity(id: ClubId): ClubIdentity {
+  const identity = identities[id] ?? fallback
+  return identity.crestPath ? { ...identity, crestPath: `${import.meta.env.BASE_URL}${identity.crestPath.slice(1)}` } : identity
+}

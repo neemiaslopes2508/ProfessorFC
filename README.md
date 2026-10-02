@@ -52,6 +52,17 @@ pnpm build
 O comando verifica os tipos com TypeScript e gera os arquivos em `dist/`.
 Para conferir o build localmente: `pnpm preview`.
 
+## Publicar no GitHub Pages
+
+O Pages deve servir o build de `dist/`, não o `index.html` de desenvolvimento que importa `src/main.tsx`.
+
+1. Envie as alterações, incluindo `.github/workflows/pages.yml`, para a branch `main` do repositório.
+2. No GitHub, abra **Settings → Pages → Build and deployment → Source** e selecione **GitHub Actions**.
+3. Em **Actions**, acompanhe **Publicar Professor FC no GitHub Pages**. Caso o push já tenha ocorrido, use **Run workflow**.
+4. Após concluir, abra `https://neemiaslopes2508.github.io/ProfessorFC/`.
+
+O workflow instala as versões registradas, executa lint/build e publica somente `dist/`. Vite usa base relativa (`./`) e os escudos respeitam `BASE_URL`, permitindo hospedar em uma subpasta. Fundos referenciados pelo CSS são resolvidos pelo Vite durante o build. Não é necessário enviar `node_modules/` ou versionar `dist/`.
+
 ## Organização inicial
 
 `src/main.tsx` apenas monta a aplicação React. A apresentação fica em `src/ui/`; `src/application/prototypeSession.ts` coordena o protótipo sobre domínio, calendário, liga e motor existentes.
