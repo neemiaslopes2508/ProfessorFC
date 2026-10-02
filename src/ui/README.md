@@ -1,4 +1,4 @@
-# Interface do protótipo — Fase 10B.2
+# Interface do protótipo — Fase 10C
 
 ## Central do treinador — redesign visual da Fase 9.5
 
@@ -34,11 +34,11 @@ Estado fica em memória: recarregar reinicia. Somente uma temporada fictícia. O
 
 ## Match Day — Fase 10A
 
-`MatchDayPage`, dentro do contrato existente de `PreMatchPage`, usa um estado de cena: HUB → ARRIVAL → MATCH_INTRO → LINEUPS → ENTERING_PITCH → MATCH. Desde a Fase 10B, entrar em MATCH ou Pular apresentação inicia a sessão em zero, sem simular minutos ou avançar a data. `LiveMatchPage` assume a apresentação incremental; `MatchPage` apresenta FULL_TIME e Continuar conserva a confirmação do resultado/tabela. Timers de apresentação são cancelados ao trocar de cena ou desmontar. O timer de reprodução e as substituições da Fase 10B.2 estão descritos abaixo; não há atletas/bola em movimento.
+`MatchDayPage`, dentro do contrato existente de `PreMatchPage`, usa um estado de cena: HUB → ARRIVAL → MATCH_INTRO → LINEUPS → ENTERING_PITCH → MATCH. Desde a Fase 10B, entrar em MATCH ou Pular apresentação inicia a sessão em zero, sem simular minutos ou avançar a data. `LiveMatchPage` assume a apresentação incremental; `MatchPage` apresenta FULL_TIME e Continuar conserva a confirmação do resultado/tabela. Timers de apresentação são cancelados ao trocar de cena ou desmontar. O timer de reprodução e as substituições da Fase 10B.2 estão descritos abaixo; o campo animado da Fase 10C está descrito abaixo.
 
 `StadiumArrival` usa ônibus e fachada próprios em SVG, cores/escudo da identidade existente, chegada de 3,2 segundos e luzes discretas. A transição para o campo dura 0,8 segundo; ambas permitem Continuar imediatamente. Cenas usam opacity/transform por 200 ms com o token ease-out existente. Ações por teclado e Pular não animam; prefers-reduced-motion remove movimento/flashes e encurta a espera das cenas automáticas. O foco acompanha o título da etapa, e a timeline pode ser rolada por teclado.
 
-`MatchScoreboard` recebe clubes, score, matchMinute, phase, competição, rodada e status explicitamente. Exibe minuto corrente, INT no intervalo e FIM no encerramento. `MatchPitch` é uma base SVG estática com gramado, linhas, gols, arquibancada abstrata, luzes e placar. `MatchStatisticsPanel` e `MatchTimeline` recebem somente estatísticas/eventos já produzidos, sem antecipar o resultado. A narração não altera nem reordena eventos. Não há novas dependências ou assets externos.
+`MatchScoreboard` recebe clubes, score, matchMinute, phase, competição, rodada e status explicitamente. Exibe minuto corrente, INT no intervalo e FIM no encerramento. `MatchPitch` usa uma variante animada durante a partida ao vivo e mantém uma base SVG estática no pré-jogo/resultado com gramado, linhas, gols, arquibancada abstrata, luzes e placar. `MatchStatisticsPanel` e `MatchTimeline` recebem somente estatísticas/eventos já produzidos, sem antecipar o resultado. A narração não altera nem reordena eventos. Não há novas dependências ou assets externos.
 
 `LiveMatchPage` consome apenas o snapshot publicado pela aplicação. Na Fase 10B os avanços eram manuais; a Fase 10B.2 substitui esses controles por Jogar/Pausar e reprodução automática, com atalhos de intervalo/fim/simulação rápida. FULL_TIME troca para o resultado pendente.
 
@@ -50,6 +50,46 @@ Fazer alterações e a navegação Equipe durante a partida abrem LiveTeamDialog
 
 No intervalo, o painel apresenta placar, estatísticas, gols/cartões/substituições e Ajustar equipe, Ajustar tática, Iniciar 2º tempo e Simular restante. Iniciar 2º tempo retoma automaticamente na velocidade escolhida. Até o intervalo para em HALF_TIME; Até o fim e Simular rápido terminam pela aplicação sem animação temporal ou atraso artificial. FULL_TIME não oferece controles de avanço. A timeline apresenta Sai/Entra com os participantes de SUBSTITUTION.
 
-Validação desta fase: somente testes novos/afetados, build/lint e uma partida manual, com 1x → 4x → pausa → troca/tática confirmadas → intervalo → nova formação → segundo tempo → fim rápido. Sem testes de timer/CSS/botões, suíte completa, temporada, analyzer ou benchmark. Atletas/bola em movimento, janelas de substituição, stamina, replay/áudio e Fase 10C permanecem fora do escopo. DEC-032 registra as alterações.
+Validação desta fase: somente testes novos/afetados, build/lint e uma partida manual, com 1x → 4x → pausa → troca/tática confirmadas → intervalo → nova formação → segundo tempo → fim rápido. Sem testes de timer/CSS/botões, suíte completa, temporada, analyzer ou benchmark. Na Fase 10B.2, atletas/bola em movimento permaneciam fora do escopo; janelas de substituição, stamina e replay/áudio continuam pendentes. DEC-032 registra as alterações.
 
 As escalações e destaques vêm de `application/matchDayOverview`, usando a equipe confirmada e a lineup CPU existente. Público/estádio são ambientação fictícia centralizada em `data/fixtures/matchDay`; não representam receitas ou dados oficiais. Técnico humano aparece como Você porque o perfil de carreira ainda não existe. Nesta subfase autorizada de apresentação, a base real permanece fora do escopo. A validação manual cobre apenas uma partida e viewport estreito; validação de toque/Safari em dispositivo físico continua pendente.
+
+## Campo 2D — Fase 10C
+
+`LiveMatchPitch` apresenta 22 jogadores numerados, goleiros e bola em SVG proporcional. `livePitchMapper` transforma somente eventos já publicados em sequências de chute, defesa, gol/reinício, falta, cartão, escanteio e substituição. A formação vem dos slots visuais existentes; coordenadas e passes decorativos não entram no domínio, nas estatísticas ou no RNG. Escalações atuais removem imediatamente o substituído e incluem a reserva; a organização acompanha mudanças de formação.
+
+Um único requestAnimationFrame local atualiza transforms diretamente, sem renders React por frame. Cada lote de minuto recebe um orçamento visual de 640 ms, escalado em 1x/2x/4x. LiveMatchPage aguarda a sequência anterior antes de pedir o próximo minuto, evitando acúmulo durante reprodução; em dispositivos lentos a apresentação pode avançar mais devagar. Pausar preserva posições, bola e progresso da sequência. Atalhos de avanço e simulação rápida continuam usando a sessão, sem espera por animações. Movimento reduzido apresenta imediatamente o estado e os rótulos dos eventos. Gols/cartões/substituições continuam registrados na timeline oficial, inclusive quando uma sequência é comprimida ou a tela muda para intervalo/resultado.
+
+Não há física, inteligência espacial, PASS oficial, replay, áudio ou dependências novas. O placar segue o snapshot oficial, sem esperar a animação. Pré-jogo e resultado conservam o campo estático; o encerramento pode interromper a animação do último minuto, preservando seus eventos no resultado.
+
+Validação: dois testes do mapper para causalidade, ausência de consumo do RNG, formação, defesa e participantes atuais. Uma partida concluída manualmente em 1x/4x com substituição e nova formação; build/lint e somente esses testes, sem suíte completa, temporada ou analyzer. A conferência manual de pausa/retomada no meio de uma animação ficou limitada pelas interrupções da aba e pela duração curta em 4x; toque e dispositivos físicos não foram validados.
+
+## Ajuste visual — gameplay em pixel art
+
+`PixelPitchArt` reúne sprites SVG reutilizáveis de jogador/bola e o cenário compartilhado entre pré-jogo, partida ao vivo e resultado. Uniformes usam primaryColor/secondaryColor; visitante tem detalhes claros e goleiros têm cores próprias. Cabelo/pele reutilizam o hash visual existente, sem RNG da simulação. O estádio inclui gramado texturizado, gols/rede, bandeiras, refletores, placas e bancos/técnicos; torcida usa um único pattern repetido, sem personagens individuais no DOM.
+
+Posições animadas são arredondadas apenas no desenho. Placar, controles, plano atual, comentário principal, timeline e estatísticas recebem bordas e tipografia de placar retrô. Escudos existentes continuam usados. Não foram criados filtros de timeline, pois não havia esse suporte. Nenhuma regra, controle, dado ou dependência foi alterado. Torcida é decorativa estática e não há animação de caminhada por sprites.
+
+Validação deste ajuste: build/lint e uma partida manual até 42 minutos, com avanço automático em 2x, pausa congelando posições/bola, seleção de 4x e substituição confirmada (22 participantes, saída/entrada corretas e contador 1/5). Sem novos testes ou execução de suíte, temporada, analyzer ou benchmark. Dispositivos físicos não validados.
+
+## Hotfix — ritmo de acompanhamento
+
+matchPlaybackConfig centraliza cadências independentes: simulationMinuteMs=1800 (1x), visualMinuteMs=1400, transição de formação=500 e movimento de organização mais lento. O multiplicador visual/UI 1/2/4 produz timers de 1800/900/450 ms; nunca é enviado ao motor. Comentários de gol/cartão/substituição são preservados por 1800 ms visuais após sua sequência. O bloqueio de fila visual permanece para dispositivos lentos. Pausa congela avanço e RAF; retomada preserva a sequência. Novo jogo pela UI agora fornece uma nova seed de carreira à aplicação.
+
+## Mercado — Fase 11A
+
+MarketPage oferece cards com avatar, clube, posição, idade, overall derivado, valor e contrato quando conhecido; filtros por nome/posição/clube/idade/overall/valor e ordenação. PlayerPanel existente recebe perfil/CTA de oferta ou listagem. SquadPage permite listar/retirar da venda e mostra À VENDA. Negociações se dividem em Recebidas/Enviadas/Concluídas; todas as mutações passam pela application layer. Valores digitados são convertidos em centavos com até duas casas, sem arredondamento monetário em float. Mercado reutiliza tema escuro/lime e navegação existente, sem novas dependências.
+
+Validação manual: Aurora contratou Ari Brisa 1 por R$ 220.000 após contraproposta; o elenco passou a 21 e orçamento a R$ 780.000. Listado pelo Elenco, recebeu e concluiu oferta da Serra de R$ 162.000; orçamento final R$ 942.000, duas transferências registradas. Console sem erros. Não jogou temporada nem partida. Contratos de fixture aparecem como não informados; novos contratos são temporários de desenvolvimento. Sem scouting/salário negociável/save.
+
+## Contratos — Fase 11B
+
+ContractNegotiation substitui o contrato fixo da Fase 11A: a compra exige negociação com o jogador após o aceite do clube. O diálogo compartilhado entre Mercado/Elenco mostra expectativas, salário mensal BRL, duração de 1–5 anos, papel, resposta e impacto mensal conhecido. Aceitar contraproposta ainda exige assinatura explícita. PlayerPanel mostra data final PT-BR, salário e papel; renovar está disponível no Mercado e Elenco. A aplicação valida todas as regras e a assinatura; React mantém apenas rascunhos e apresentação. Sem nova dependência.
+
+Validação manual: João Papel 10 foi contratado por R$ 509.000 após contrapropor salário de R$ 17.040/mês, 3 anos e papel Importante; apareceu no elenco com contrato até 31/03/2029. Renovação para R$ 18.000/mês preservou jogador e vínculo único. Sem temporada ou suíte completa.
+
+## Folha, vencimento e agentes livres — Fase 11C
+
+PayrollSummary apresenta folha mensal derivada, teto, espaço, caixa e último PLAYER_WAGES em Mercado/Elenco. Elenco acrescenta salário, fim, papel/status, filtro de contratos e alerta de vencimentos em 180 dias. Mercado inclui agentes livres no filtro de clube; estes abrem diretamente ContractNegotiation e assinam sem taxa. Toda regra temporal e financeira permanece na aplicação.
+
+Validação manual sem jogar partida: Aurora iniciou com folha de R$ 79.000 e caixa de R$ 5.000.000; 01/04 registrou a cobrança e caixa de R$ 4.921.000. Em 02/04 João Nuvem 20 tornou-se agente livre; foi contratado sem taxa por R$ 10.800/mês até 02/04/2028, com folha final de R$ 84.900 e caixa preservado.

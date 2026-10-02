@@ -24,7 +24,7 @@ export function MatchTimeline({ events, home, away, players, title = 'Narração
     <p className="muted">{events.length ? 'Eventos já processados da partida.' : 'Nenhum evento registrado até agora.'}</p>
     <ol className="timeline" tabIndex={events.length ? 0 : undefined} aria-label="Eventos da partida, em ordem cronológica">{events.map((event, index) => {
       const club = event.clubId === home.id ? home.name : away.name
-      return <li key={index} className={event.type === 'GOAL' ? 'goal-event' : ''}><time>{event.minute}′</time><div><strong>{narration(event, club, event.playerInId || event.playerId ? byId.get((event.playerInId ?? event.playerId)!) : undefined, event.playerOutId || event.secondaryPlayerId ? byId.get((event.playerOutId ?? event.secondaryPlayerId)!) : undefined)}</strong><small>{club}</small></div></li>
+      return <li key={index} data-event-type={event.type} className={event.type === 'GOAL' ? 'goal-event' : ''}><time>{event.minute}′</time><div><strong>{narration(event, club, event.playerInId || event.playerId ? byId.get((event.playerInId ?? event.playerId)!) : undefined, event.playerOutId || event.secondaryPlayerId ? byId.get((event.playerOutId ?? event.secondaryPlayerId)!) : undefined)}</strong><small>{club}</small></div></li>
     })}</ol>
   </section>
 }

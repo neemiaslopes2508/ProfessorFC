@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react'
 import type { Player, Position } from '../../domain/players'
 import { playerAge } from '../../application/prototypeSession'
 import { playerOverall, positionFit } from '../../application/teamOverview'
-import { attributeLabels, money, positionLabel, statusLabels } from './presentation'
+import { attributeLabels, dateLabel, money, positionLabel, statusLabels, squadRoleLabels } from './presentation'
+import type { Contract } from '../../domain/contracts'
 import type { ReactNode } from 'react'
 import { PlayerAvatar } from './PlayerAvatar'
 
-export function PlayerPanel({ player, date, position, onClose, children }: { player: Player; date: string; position?: Position; onClose: () => void; children?: ReactNode }) {
+export function PlayerPanel({ player, date, position, contract, onClose, children }: { player: Player; date: string; position?: Position; contract?: Contract; onClose: () => void; children?: ReactNode }) {
   const closeRef = useRef<HTMLButtonElement>(null)
   useEffect(() => { const previous = document.activeElement; closeRef.current?.focus(); return () => { if (previous instanceof HTMLElement && previous.isConnected) previous.focus() } }, [player.id])
   return <section className="panel player-panel" aria-label={`Detalhes de ${player.displayName}`} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); onClose() } }}>
@@ -16,6 +17,7 @@ export function PlayerPanel({ player, date, position, onClose, children }: { pla
     {position && <p className={`fit-note ${positionFit(player, position)}`}>Em {positionLabel(position)}: {positionFit(player, position) === 'natural' ? 'posição natural' : positionFit(player, position) === 'secondary' ? 'posição secundária' : 'improvisado — permitido com alerta'}</p>}
     <div className="player-numbers"><div><small>Condição</small><strong>{player.fitness}%</strong></div><div><small>Forma</small><strong>{player.form}</strong></div><div><small>Valor de referência</small><strong>{money(player.marketValue.cents)}</strong></div></div><p className="status-line">{statusLabels[player.status]} · Overall base, sem os modificadores de condição e forma.</p>
     <h3>Atributos</h3><div className="attribute-list">{Object.entries(player.attributes).map(([key, value]) => <div key={key}><span>{attributeLabels[key as keyof typeof attributeLabels]}</span><meter min="1" max="100" value={value} aria-label={attributeLabels[key as keyof typeof attributeLabels]} /><strong>{value}</strong></div>)}</div>
+    {contract && <div className="contract-profile"><h3>Contrato atual</h3><p>Contrato até: <strong>{dateLabel(contract.endDate)}</strong></p><p>{money(contract.salary.cents)}/mês · {squadRoleLabels[contract.squadRole]}</p></div>}
     {children && <div className="player-actions">{children}</div>}
   </section>
 }

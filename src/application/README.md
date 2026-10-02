@@ -43,3 +43,23 @@ FULL_TIME encerra o controlador e publica pendingMatch com toResult, sem ressimu
 `liveTeamEditorSession` projeta a lineup/tática atuais da MatchSession exclusivamente para o editor. `captureLiveTeamSetup` cria o rascunho TeamSetup reutilizado pela tela Equipe e por suas operações de troca/formação; experimentar/cancelar não executa comandos na partida. `commitPrototypeLiveTeamSetup` confirma o conjunto atomicamente, normaliza o banco removendo titulares que saíram e chama applyTeamSelection. Erros preservam controlador/snapshot; táticas e elenco pré-jogo permanecem inalterados. A UI só permite alterações do clube humano.
 
 `advancePrototypeToHalfTime` para no intervalo e não faz nada no segundo tempo. `finishPrototypeLiveMatch` processa os minutos restantes, inicia explicitamente o segundo tempo quando permitido e publica o resultado; Até o fim, Simular rápido e Simular restante usam essa mesma operação. Não há motor separado nem atraso artificial. O loop consulta canAdvance/canStartSecondHalf; futuras pendências obrigatórias devem bloquear essas permissões. A confirmação em Continuar continua única, inclusive com SUBSTITUTION.
+
+## Hotfix — seed da carreira e ritmo
+
+A UI gera uma careerSeed uint32 com crypto.getRandomValues ao assumir um clube e a mantém na PrototypeSession. A fonte de cada partida (humana/CPU) deriva dessa seed e dos IDs da edição, partida, mandante e visitante, sem consumir RNG de outra partida. startPrototype aceita seed explícita; seu padrão 2026 permanece para chamadas técnicas reproduzíveis. A UI sempre fornece uma seed nova. Uma seed diferente permite outro roteiro, sem garantir placares distintos. Não implementa persistência/save nem muda o balanceamento.
+
+## Mercado — Fase 11A
+
+transferMarket coordena o estado market da PrototypeSession e os modelos de transfers/, sem alterar GameData. Ofertas/contrapropostas usam avaliação determinística e centavos inteiros. Conclusão é atômica, revalida orçamento/ownership, preserva playerId e escalações e registra histórico. Atualizar mercado gera ofertas CPU somente por atletas listados. Durante partida ativa/resultado pendente a conclusão é bloqueada. Não reserva orçamento nem implementa save/IA global. Ver src/transfers/README.md.
+
+## Contratos — Fase 11B
+
+O aceite do clube produz CLUB_ACCEPTED. offerPlayerContract registra a resposta determinística do jogador; completeTransfer exige termos aceitos, revalida expectativa e orçamento salarial e só então cria o vínculo/move o atleta. renewPlayerContract substitui o contrato ativo sem taxa de transferência. contractPayroll calcula a folha mensal conhecida pelos contratos ativos e troca o salário anterior ao renovar; salários ausentes são explicitamente sinalizados como estimativa parcial. Em vendas humanas, o comprador CPU oferece as expectativas do jogador automaticamente, ainda sujeito à validação financeira na assinatura. Não há pagamentos mensais, expiração automática ou agentes livres completos.
+
+## Ciclo dos contratos — Fase 11C
+
+contractLifecycle projeta folha/status e processa vencimentos e PLAYER_WAGES na application layer. advancePrototype visita a próxima data de futebol, vencimento ou pagamento; processa contratos antes das partidas dessa data. O GameCalendar continua responsável pelo relógio/eventos de futebol. processContractDate processa um intervalo sem mover o relógio por conta própria; sua aplicação pública normal é advancePrototype. Configuração central: pagamento dia 1 (dias 1–28 suportados), alerta de 180 dias. endDate é exclusivo: nesse dia expira antes de qualquer cobrança. O salário integral da folha ativa na data de pagamento é cobrado, sem proporcionalidade; ledger por clube/mês impede duplicação. Caixa pode ficar negativo conforme ClubFinances, sem nova regra de insolvência.
+
+Vencimento preserva contrato EXPIRED e Player em freeAgents com clubId=null, retira referências do elenco/escalação/listagem e cancela negociações pendentes. Não altera a base inicial GameData. Se faltar substituto, mantém slots incompletos para a validação existente exigir reorganização, sem impedir vencimento. Renovação termina o contrato anterior; signFreeAgent cria vínculo e banco sem taxa/receita ao clube antigo, sujeito ao teto salarial. Totais salariais não são persistidos. Sem save, bônus ou obrigações trabalhistas.
+
+A sessão fictícia agora inicia com 120 contratos mensais de desenvolvimento (R$ 3.000–4.900 por atleta). Um reserva de cada clube vence em 02/04/2026; os demais em 01/04/2027. Isso permite conferir cobrança, expiração e contratação em dois avanços sem disputar temporada. Não representa dados oficiais.

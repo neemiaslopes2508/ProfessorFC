@@ -1,6 +1,14 @@
-import type { ClubId, MatchId, PlayerId } from '../core/ids'
+import type { ClubId, ContractId, MatchId, PlayerId } from '../core/ids'
+import { createContract } from '../domain/contracts'
+import { createMoneyFromCents } from '../core/money'
+import { nextContractDate, processContractDate } from './contractLifecycle'
+import type { WageTransaction } from './contractLifecycle'
 import { createSeededRandomSource } from '../core/random'
 import { assertDate } from '../core/validation'
+import { assertIntegerRange } from '../core/validation'
+import { prototypeMatchSeed } from './prototypeMatchSeed'
+import { EMPTY_TRANSFER_MARKET } from '../transfers/types'
+import type { TransferMarket } from '../transfers/types'
 import { createDevelopmentFixture } from '../data/fixtures/development'
 import { loadGameData } from '../data'
 import { createLeagueSeason, createSeasonSchedule, getLeagueStandings, getLeagueRoundState } from '../competitions'
@@ -9,13 +17,17 @@ import type { Tactics, Lineup, Formation } from '../domain/tactics'
 import type { Club } from '../domain/clubs'
 import type { Player } from '../domain/players'
 import type { MatchSnapshot, MatchSimulationResult, SimulationTeam } from '../simulation'
-import { advanceGameToNextEvent, completeHumanMatch, createTemporalGame, getPendingHumanActions, getScheduledMatch, previewHumanMatch } from './temporalGame'
+import { advanceGameTo, completeHumanMatch, createTemporalGame, getPendingHumanActions, getScheduledMatch, previewHumanMatch } from './temporalGame'
 import type { TemporalGame, MatchDayDependencies } from './temporalGame'
 
 export interface PresentedMatch { readonly matchId: MatchId; readonly result: MatchSimulationResult }
 export interface PrototypeSession {
+  readonly careerSeed: number
+  readonly market: TransferMarket
   readonly game: TemporalGame
   readonly teams: readonly SimulationTeam[]
+  readonly freeAgents: readonly Player[]
+  readonly financialTransactions: readonly WageTransaction[]
   readonly starterSlots?: readonly (PlayerId | undefined)[]
   readonly liveMatch?: MatchSnapshot
   readonly pendingMatch?: PresentedMatch
@@ -44,7 +56,8 @@ function initialLineup(club: Club, players: readonly Player[], tactics: Tactics)
   return createLineup({ positions, startingPlayers: positions.map(slot => slot.playerId), bench: available.filter(player => !used.has(player.id)).map(player => player.id) })
 }
 
-export function startPrototype(clubId: ClubId): PrototypeSession {
+export function startPrototype(clubId: ClubId, careerSeed = 2026): PrototypeSession {
+  assertIntegerRange(careerSeed, 0, 0xffffffff, 'Seed da carreira')
   const data = developmentData()
   const clubs = data.clubs.getAll()
   if (!clubs.some(club => club.id === clubId)) throw new Error('Escolha um dos clubes de desenvolvimento.')
@@ -55,7 +68,8 @@ export function startPrototype(clubId: ClubId): PrototypeSession {
   })
   const league = createLeagueSeason(data.competitions.getAll()[0], data.competitionSeasons.getAll()[0])
   const schedule = createSeasonSchedule(league, { seasonStartDate: '2026-04-01', firstRoundDate: '2026-04-05', daysBetweenRounds: 7 })
-  return Object.freeze({ game: createTemporalGame('2026-03-31', [{ league, schedule }], clubId), teams: Object.freeze(teams) })
+  const contracts = teams.flatMap(team => team.players.map((player, index) => createContract({ id: `dev-contract-${player.id}` as ContractId, playerId: player.id, clubId: team.club.id, startDate: '2026-01-01', endDate: player.id === team.lineup.bench.at(-1) ? '2026-04-02' : '2027-04-01', salary: createMoneyFromCents(300000 + index * 10000), squadRole: 'ROTATION', status: 'ACTIVE' })))
+  return Object.freeze({ careerSeed, market: Object.freeze({ ...EMPTY_TRANSFER_MARKET, contracts: Object.freeze(contracts) }), game: createTemporalGame('2026-03-31', [{ league, schedule }], clubId), teams: Object.freeze(teams), freeAgents: Object.freeze([]), financialTransactions: Object.freeze([]) })
 }
 export function humanTeam(session: PrototypeSession): SimulationTeam {
   const team = session.teams.find(team => team.club.id === session.game.humanClubId)
@@ -148,7 +162,6 @@ export function setBench(session: PrototypeSession, ids: readonly PlayerId[]): P
   return editTeam(session, team => ({ ...team, lineup: { ...team.lineup, bench: [...ids] } }))
 }
 export function prototypeMatchDependencies(session: PrototypeSession): MatchDayDependencies {
-  const fixtures = session.game.competitions[0].league.fixtures
   return {
     getTeam: clubId => {
       const team = session.teams.find(team => team.club.id === clubId)
@@ -156,16 +169,24 @@ export function prototypeMatchDependencies(session: PrototypeSession): MatchDayD
       return team
     },
     randomForMatch: matchId => {
-      const index = fixtures.findIndex(fixture => fixture.id === matchId)
-      if (index < 0) throw new Error('Partida desconhecida.')
-      return createSeededRandomSource(Math.imul(2026 + index, 2654435761) >>> 0)
+      const edition = session.game.competitions.find(({ league }) => league.fixtures.some(fixture => fixture.id === matchId))
+      const fixture = edition?.league.fixtures.find(fixture => fixture.id === matchId)
+      if (!edition || !fixture) throw new Error('Partida desconhecida.')
+      return createSeededRandomSource(prototypeMatchSeed(session.careerSeed, edition.league.season.id, fixture.id, fixture.homeClubId, fixture.awayClubId))
     },
   }
 }
 export function advancePrototype(session: PrototypeSession): PrototypeSession {
   if (session.liveMatch) throw new Error('Conclua a partida em andamento antes de avançar o calendário.')
   if (session.pendingMatch) throw new Error('Clique em Continuar para confirmar o resultado antes de avançar.')
-  return Object.freeze({ ...session, game: advanceGameToNextEvent(session.game, prototypeMatchDependencies(session)).game })
+  const processed = processContractDate(session, session.game.calendar.currentDate)
+  const current = advanceGameTo(processed.game, processed.game.calendar.currentDate, prototypeMatchDependencies(processed))
+  const base = Object.freeze({ ...processed, game: current.game })
+  if (current.blockedEvents.length) return base
+  const date = [base.game.calendar.nextPendingEvent()?.date, nextContractDate(base)].filter((date): date is string => !!date).sort()[0]
+  if (!date) return base
+  const evolved = processContractDate(base, date)
+  return Object.freeze({ ...evolved, game: advanceGameTo(base.game, date, prototypeMatchDependencies(evolved)).game })
 }
 export function playPrototypeMatch(session: PrototypeSession): PrototypeSession {
   if (session.liveMatch) throw new Error('A partida já está em andamento; use seus controles de avanço.')

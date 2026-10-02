@@ -7,7 +7,7 @@ import type { Contract } from './contract'
 function contract(): Contract {
   return {
     id: createId('Contract', 'test-contract'), playerId: createId('Player', 'test-player'), clubId: createId('Club', 'test-club'),
-    startDate: '2026-01-01', endDate: '2026-12-31', salary: createMoneyFromCents(10000), status: 'ACTIVE',
+    startDate: '2026-01-01', endDate: '2026-12-31', salary: createMoneyFromCents(10000), status: 'ACTIVE', squadRole: 'ROTATION',
   }
 }
 

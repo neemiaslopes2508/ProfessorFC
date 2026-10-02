@@ -2,7 +2,7 @@ import type { Club } from '../../domain/clubs'
 import { ClubCrest } from '../components/ClubMark'
 import { InterfaceIcon } from '../components/InterfaceIcon'
 
-const navigation = [{ id: 'dashboard', label: 'Dashboard' }, { id: 'team', label: 'Equipe' }, { id: 'squad', label: 'Elenco' }, { id: 'calendar', label: 'Calendário' }, { id: 'table', label: 'Tabela' }] as const
+const navigation = [{ id: 'dashboard', label: 'Dashboard' }, { id: 'team', label: 'Equipe' }, { id: 'squad', label: 'Elenco' }, { id: 'market', label: 'Mercado' }, { id: 'calendar', label: 'Calendário' }, { id: 'table', label: 'Tabela' }] as const
 type NavigationPage = typeof navigation[number]['id'] | 'live' | 'match'
 
 export function Sidebar({ club, page, live, pending, onNavigate, onRestart }: {

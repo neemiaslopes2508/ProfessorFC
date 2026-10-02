@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { HomePage } from './pages/HomePage'
 import { startPrototype, getDevelopmentClubs, advancePrototype, continuePrototypeMatch, moveTeamPlayer, setBench, setPrototypeTactics, prototypeView } from '../application/prototypeSession'
+import { newPrototypeCareerSeed } from '../application/prototypeMatchSeed'
 import { startPrototypeLiveMatch, advancePrototypeLiveMatch, advancePrototypeToHalfTime, startPrototypeSecondHalf, finishPrototypeLiveMatch, commitPrototypeLiveTeamSetup } from '../application/liveHumanMatch'
 import type { PrototypeSession } from '../application/prototypeSession'
 import { captureTeamSetup, commitTeamSetup, hasTeamSetupChanges, previewTeamSetup } from '../application/teamSetup'
 import type { TeamSetup } from '../application/teamSetup'
 import { ClubSelectionPage } from './pages/ClubSelectionPage'
 import { SquadPage } from './pages/SquadPage'
+import { MarketPage } from './pages/MarketPage'
+import { listTransferPlayer } from '../application/transferMarket'
 import { TeamPage } from './pages/TeamPage'
 import { DashboardPage, StandingsPage } from './pages/SeasonPages'
 import { CalendarPage } from './pages/CalendarPage'
@@ -20,7 +23,7 @@ import { readableSelectionMessage } from './components/presentation'
 import './styles.css'
 
 export function App() { return <ErrorBoundary><PrototypeApp /></ErrorBoundary> }
-type Page = 'home' | 'clubs' | 'dashboard' | 'squad' | 'team' | 'calendar' | 'table' | 'pregame' | 'live' | 'match'
+type Page = 'home' | 'clubs' | 'dashboard' | 'squad' | 'team' | 'calendar' | 'table' | 'pregame' | 'live' | 'match' | 'market'
 type LeaveIntent = { type: 'navigate'; page: Page } | { type: 'advance' } | { type: 'restart' }
 
 function PrototypeApp() {
@@ -39,7 +42,7 @@ function PrototypeApp() {
   }
   const errorBanner = error && <div className="notice error" role="alert">{error}<button onClick={() => setError(undefined)}>Fechar mensagem</button></div>
   if (page === 'home') return <>{errorBanner}<HomePage onNewGame={() => setPage('clubs')} /></>
-  if (page === 'clubs' || !session) return <>{errorBanner}<ClubSelectionPage clubs={getDevelopmentClubs()} onBack={() => setPage('home')} onSelect={id => run(() => startPrototype(id), 'dashboard')} /></>
+  if (page === 'clubs' || !session) return <>{errorBanner}<ClubSelectionPage clubs={getDevelopmentClubs()} onBack={() => setPage('home')} onSelect={id => run(() => startPrototype(id, newPrototypeCareerSeed()), 'dashboard')} /></>
   const currentSession = session
   const dirty = hasTeamSetupChanges(session, draft)
   const editing = previewTeamSetup(session, draft)
@@ -90,7 +93,8 @@ function PrototypeApp() {
     <div className="workspace"><TopBar year={view.league.season.year} date={session.game.calendar.currentDate} action={view.league.season.status === 'FINISHED' ? <span className="pill">Temporada encerrada</span> : session.liveMatch ? <button className="primary" onClick={() => navigate('live')}>Voltar à partida</button> : session.pendingMatch ? <button className="primary" onClick={() => navigate('match')}>Ver resultado / Continuar</button> : view.pendingActions.length ? <button className="primary" onClick={prepare}>Preparar partida</button> : <button className="primary" onClick={() => request({ type: 'advance' })}>Avançar →</button>} />
     <main className="game-content">{errorBanner}
       {page === 'dashboard' && <DashboardPage session={session} onPrepare={prepare} onTable={() => navigate('table')} onLastMatch={() => navigate('match')} onTeam={() => navigate('team')} />}
-      {page === 'squad' && <SquadPage session={session} />}
+      {page === 'squad' && <SquadPage session={session} onList={id => run(() => listTransferPlayer(session, id))} onAction={operation => run(operation)} />}
+      {page === 'market' && <MarketPage session={session} onAction={operation => { const success = run(operation); if (success) setDraft(undefined); return success }} />}
       {page === 'team' && <TeamPage session={editing} dirty={dirty} saveMessage={teamMessage} onSave={() => { saveTeam() }} onDiscard={discardTeam} onMove={(id, slot) => editDraft(current => moveTeamPlayer(current, id, slot))} onBench={ids => editDraft(current => setBench(current, ids))} onTactics={tactics => editDraft(current => setPrototypeTactics(current, tactics))} />}
       {page === 'calendar' && <CalendarPage session={session} />}
       {page === 'table' && <StandingsPage session={session} />}
