@@ -1,0 +1,1408 @@
+[
+  {
+    "name": "fixture-mista",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": false,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Aurora Inventada",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 47.747843000013326,
+        "awayStrength": 51.48339034516072
+      },
+      {
+        "home": "Aurora Inventada",
+        "away": "Vale do Eclipse",
+        "homeStrength": 47.747843000013326,
+        "awayStrength": 55.21893769030811
+      },
+      {
+        "home": "Aurora Inventada",
+        "away": "Estrela de Papel",
+        "homeStrength": 47.747843000013326,
+        "awayStrength": 58.9544850354555
+      },
+      {
+        "home": "Aurora Inventada",
+        "away": "Porto das Nuvens",
+        "homeStrength": 47.747843000013326,
+        "awayStrength": 62.690032380602894
+      },
+      {
+        "home": "Aurora Inventada",
+        "away": "Serra dos Ventos",
+        "homeStrength": 47.747843000013326,
+        "awayStrength": 66.4255797257503
+      },
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Aurora Inventada",
+        "homeStrength": 51.483390345160714,
+        "awayStrength": 47.747843000013326
+      },
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Vale do Eclipse",
+        "homeStrength": 51.483390345160714,
+        "awayStrength": 55.21893769030811
+      },
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Estrela de Papel",
+        "homeStrength": 51.483390345160714,
+        "awayStrength": 58.9544850354555
+      },
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Porto das Nuvens",
+        "homeStrength": 51.483390345160714,
+        "awayStrength": 62.690032380602894
+      },
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Serra dos Ventos",
+        "homeStrength": 51.483390345160714,
+        "awayStrength": 66.4255797257503
+      },
+      {
+        "home": "Vale do Eclipse",
+        "away": "Aurora Inventada",
+        "homeStrength": 55.2189376903081,
+        "awayStrength": 47.747843000013326
+      },
+      {
+        "home": "Vale do Eclipse",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 55.2189376903081,
+        "awayStrength": 51.48339034516072
+      },
+      {
+        "home": "Vale do Eclipse",
+        "away": "Estrela de Papel",
+        "homeStrength": 55.2189376903081,
+        "awayStrength": 58.9544850354555
+      },
+      {
+        "home": "Vale do Eclipse",
+        "away": "Porto das Nuvens",
+        "homeStrength": 55.2189376903081,
+        "awayStrength": 62.690032380602894
+      },
+      {
+        "home": "Vale do Eclipse",
+        "away": "Serra dos Ventos",
+        "homeStrength": 55.2189376903081,
+        "awayStrength": 66.4255797257503
+      },
+      {
+        "home": "Estrela de Papel",
+        "away": "Aurora Inventada",
+        "homeStrength": 58.9544850354555,
+        "awayStrength": 47.747843000013326
+      },
+      {
+        "home": "Estrela de Papel",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 58.9544850354555,
+        "awayStrength": 51.48339034516072
+      },
+      {
+        "home": "Estrela de Papel",
+        "away": "Vale do Eclipse",
+        "homeStrength": 58.9544850354555,
+        "awayStrength": 55.21893769030811
+      },
+      {
+        "home": "Estrela de Papel",
+        "away": "Porto das Nuvens",
+        "homeStrength": 58.9544850354555,
+        "awayStrength": 62.690032380602894
+      },
+      {
+        "home": "Estrela de Papel",
+        "away": "Serra dos Ventos",
+        "homeStrength": 58.9544850354555,
+        "awayStrength": 66.4255797257503
+      },
+      {
+        "home": "Porto das Nuvens",
+        "away": "Aurora Inventada",
+        "homeStrength": 62.690032380602894,
+        "awayStrength": 47.747843000013326
+      },
+      {
+        "home": "Porto das Nuvens",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 62.690032380602894,
+        "awayStrength": 51.48339034516072
+      },
+      {
+        "home": "Porto das Nuvens",
+        "away": "Vale do Eclipse",
+        "homeStrength": 62.690032380602894,
+        "awayStrength": 55.21893769030811
+      },
+      {
+        "home": "Porto das Nuvens",
+        "away": "Estrela de Papel",
+        "homeStrength": 62.690032380602894,
+        "awayStrength": 58.9544850354555
+      },
+      {
+        "home": "Porto das Nuvens",
+        "away": "Serra dos Ventos",
+        "homeStrength": 62.690032380602894,
+        "awayStrength": 66.4255797257503
+      },
+      {
+        "home": "Serra dos Ventos",
+        "away": "Aurora Inventada",
+        "homeStrength": 66.42557972575028,
+        "awayStrength": 47.747843000013326
+      },
+      {
+        "home": "Serra dos Ventos",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 66.42557972575028,
+        "awayStrength": 51.48339034516072
+      },
+      {
+        "home": "Serra dos Ventos",
+        "away": "Vale do Eclipse",
+        "homeStrength": 66.42557972575028,
+        "awayStrength": 55.21893769030811
+      },
+      {
+        "home": "Serra dos Ventos",
+        "away": "Estrela de Papel",
+        "homeStrength": 66.42557972575028,
+        "awayStrength": 58.9544850354555
+      },
+      {
+        "home": "Serra dos Ventos",
+        "away": "Porto das Nuvens",
+        "homeStrength": 66.42557972575028,
+        "awayStrength": 62.690032380602894
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 1.4669,
+        "away": 1.3347,
+        "total": 2.8016
+      },
+      "shots": {
+        "home": 9.8445,
+        "away": 9.1787,
+        "total": 19.0232
+      },
+      "shotsOnTarget": {
+        "home": 5.0522,
+        "away": 4.7226,
+        "total": 9.7748
+      },
+      "possession": {
+        "home": 50.76199999999989,
+        "away": 49.23800000000012,
+        "total": 100
+      },
+      "corners": {
+        "home": 2.0801,
+        "away": 1.9654,
+        "total": 4.0455
+      },
+      "fouls": {
+        "home": 12.4095,
+        "away": 12.7505,
+        "total": 25.16
+      },
+      "yellowCards": {
+        "home": 1.9801,
+        "away": 2.0375,
+        "total": 4.0176
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 4158,
+      "draws": 2071,
+      "awayWins": 3771
+    },
+    "outcomePercent": {
+      "homeWins": 41.58,
+      "draws": 20.71,
+      "awayWins": 37.71
+    },
+    "goalBuckets": {
+      "0": 625,
+      "1": 1730,
+      "2": 2310,
+      "3": 2227,
+      "4": 1546,
+      "5": 909,
+      "6+": 653
+    },
+    "exactGoals": {
+      "0": 625,
+      "1": 1730,
+      "2": 2310,
+      "3": 2227,
+      "4": 1546,
+      "5": 909,
+      "6": 428,
+      "7": 152,
+      "8": 47,
+      "9": 18,
+      "10": 6,
+      "11": 1,
+      "15": 1
+    },
+    "scorelines": {
+      "0-0": 625,
+      "3-3": 81,
+      "1-1": 963,
+      "1-2": 665,
+      "1-3": 353,
+      "0-2": 653,
+      "0-3": 376,
+      "0-5": 62,
+      "3-0": 480,
+      "1-0": 844,
+      "2-1": 706,
+      "5-3": 9,
+      "0-1": 886,
+      "2-0": 694,
+      "4-0": 236,
+      "5-0": 105,
+      "0-4": 164,
+      "2-2": 397,
+      "4-3": 20,
+      "3-1": 396,
+      "4-1": 173,
+      "2-3": 186,
+      "3-4": 29,
+      "4-2": 74,
+      "6-1": 24,
+      "1-5": 61,
+      "3-2": 218,
+      "5-1": 66,
+      "2-5": 22,
+      "7-1": 4,
+      "1-4": 165,
+      "1-6": 15,
+      "6-0": 42,
+      "0-6": 21,
+      "3-7": 1,
+      "7-0": 9,
+      "1-8": 3,
+      "2-6": 4,
+      "2-4": 83,
+      "6-2": 9,
+      "1-7": 10,
+      "5-2": 28,
+      "8-1": 5,
+      "4-4": 4,
+      "6-3": 3,
+      "0-7": 5,
+      "9-1": 2,
+      "2-7": 1,
+      "3-5": 4,
+      "8-0": 3,
+      "3-12": 1,
+      "7-2": 1,
+      "10-1": 1,
+      "5-4": 3,
+      "10-0": 1,
+      "5-5": 1,
+      "9-0": 1,
+      "3-6": 1,
+      "6-4": 1
+    },
+    "maximumGoals": 15,
+    "upsets": {
+      "eligible": 6667,
+      "wins": 880,
+      "percent": 13.19934003299835
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2333.0704,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "forte-mandante",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": false,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Serra dos Ventos",
+        "away": "Aurora Inventada",
+        "homeStrength": 65.21666666666665,
+        "awayStrength": 50.166666666666664
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 2.285,
+        "away": 0.5611,
+        "total": 2.8461
+      },
+      "shots": {
+        "home": 12.3466,
+        "away": 6.7828,
+        "total": 19.1294
+      },
+      "shotsOnTarget": {
+        "home": 7.0404,
+        "away": 2.991,
+        "total": 10.0314
+      },
+      "possession": {
+        "home": 57.32985999999994,
+        "away": 42.670140000000174,
+        "total": 100.00000000000011
+      },
+      "corners": {
+        "home": 2.4956,
+        "away": 1.5547,
+        "total": 4.0503
+      },
+      "fouls": {
+        "home": 10.7341,
+        "away": 14.4284,
+        "total": 25.1625
+      },
+      "yellowCards": {
+        "home": 1.7461,
+        "away": 2.2622,
+        "total": 4.0083
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 7639,
+      "draws": 1597,
+      "awayWins": 764
+    },
+    "outcomePercent": {
+      "homeWins": 76.39,
+      "draws": 15.97,
+      "awayWins": 7.64
+    },
+    "goalBuckets": {
+      "0": 599,
+      "1": 1620,
+      "2": 2310,
+      "3": 2262,
+      "4": 1652,
+      "5": 898,
+      "6+": 659
+    },
+    "exactGoals": {
+      "0": 599,
+      "1": 1620,
+      "2": 2310,
+      "3": 2262,
+      "4": 1652,
+      "5": 898,
+      "6": 399,
+      "7": 169,
+      "8": 67,
+      "9": 18,
+      "10": 4,
+      "11": 2
+    },
+    "scorelines": {
+      "4-1": 389,
+      "8-0": 8,
+      "4-0": 731,
+      "2-1": 844,
+      "1-1": 721,
+      "3-1": 639,
+      "3-3": 33,
+      "0-0": 599,
+      "0-2": 90,
+      "5-1": 150,
+      "3-0": 1175,
+      "9-0": 2,
+      "1-0": 1295,
+      "2-0": 1499,
+      "7-1": 26,
+      "0-1": 325,
+      "6-1": 50,
+      "6-0": 115,
+      "5-0": 271,
+      "4-2": 95,
+      "5-2": 44,
+      "1-2": 222,
+      "2-3": 44,
+      "3-2": 190,
+      "2-2": 240,
+      "3-4": 10,
+      "1-3": 39,
+      "0-3": 21,
+      "11-0": 1,
+      "6-2": 21,
+      "7-0": 39,
+      "1-4": 4,
+      "5-3": 8,
+      "4-3": 26,
+      "4-4": 4,
+      "0-4": 3,
+      "2-4": 5,
+      "8-1": 6,
+      "5-4": 2,
+      "7-2": 5,
+      "9-1": 2,
+      "8-2": 1,
+      "10-1": 1,
+      "1-5": 1,
+      "6-3": 3,
+      "7-3": 1
+    },
+    "maximumGoals": 11,
+    "upsets": {
+      "eligible": 10000,
+      "wins": 764,
+      "percent": 7.64
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2429.5096,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "forte-visitante",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": false,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Aurora Inventada",
+        "away": "Serra dos Ventos",
+        "homeStrength": 50.16666666666666,
+        "awayStrength": 65.21666666666665
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 0.6225,
+        "away": 2.1029,
+        "total": 2.7254
+      },
+      "shots": {
+        "home": 7.3243,
+        "away": 11.6056,
+        "total": 18.9299
+      },
+      "shotsOnTarget": {
+        "home": 3.2313,
+        "away": 6.6291,
+        "total": 9.8604
+      },
+      "possession": {
+        "home": 44.264869999999924,
+        "away": 55.73512999999992,
+        "total": 99.99999999999984
+      },
+      "corners": {
+        "home": 1.6574,
+        "away": 2.3749,
+        "total": 4.0323
+      },
+      "fouls": {
+        "home": 13.9996,
+        "away": 11.1069,
+        "total": 25.1065
+      },
+      "yellowCards": {
+        "home": 2.2095,
+        "away": 1.7967,
+        "total": 4.0062
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 991,
+      "draws": 1786,
+      "awayWins": 7223
+    },
+    "outcomePercent": {
+      "homeWins": 9.91,
+      "draws": 17.86,
+      "awayWins": 72.23
+    },
+    "goalBuckets": {
+      "0": 629,
+      "1": 1792,
+      "2": 2433,
+      "3": 2224,
+      "4": 1542,
+      "5": 807,
+      "6+": 573
+    },
+    "exactGoals": {
+      "0": 629,
+      "1": 1792,
+      "2": 2433,
+      "3": 2224,
+      "4": 1542,
+      "5": 807,
+      "6": 382,
+      "7": 132,
+      "8": 40,
+      "9": 10,
+      "10": 6,
+      "11": 2,
+      "13": 1
+    },
+    "scorelines": {
+      "0-1": 1390,
+      "1-3": 626,
+      "1-1": 852,
+      "1-0": 402,
+      "2-3": 199,
+      "1-2": 915,
+      "0-2": 1465,
+      "0-3": 971,
+      "0-4": 590,
+      "2-2": 270,
+      "0-0": 629,
+      "3-0": 33,
+      "0-5": 218,
+      "2-4": 127,
+      "3-1": 54,
+      "1-5": 138,
+      "4-2": 8,
+      "3-2": 59,
+      "2-1": 305,
+      "1-4": 327,
+      "0-6": 73,
+      "2-0": 116,
+      "1-6": 57,
+      "2-5": 43,
+      "3-3": 35,
+      "3-4": 15,
+      "0-7": 11,
+      "3-7": 2,
+      "1-8": 2,
+      "2-6": 14,
+      "1-7": 12,
+      "4-1": 4,
+      "4-3": 5,
+      "3-6": 3,
+      "3-5": 8,
+      "4-6": 1,
+      "5-3": 1,
+      "4-5": 2,
+      "2-8": 3,
+      "0-8": 5,
+      "5-1": 1,
+      "2-7": 1,
+      "0-9": 2,
+      "5-2": 1,
+      "4-7": 1,
+      "4-0": 2,
+      "1-12": 1,
+      "3-8": 1
+    },
+    "maximumGoals": 13,
+    "upsets": {
+      "eligible": 10000,
+      "wins": 991,
+      "percent": 9.91
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2259.6139000000003,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "forte-neutro",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": true,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Serra dos Ventos",
+        "away": "Aurora Inventada",
+        "homeStrength": 65.21666666666665,
+        "awayStrength": 50.166666666666664
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 2.1867,
+        "away": 0.5861,
+        "total": 2.7728
+      },
+      "shots": {
+        "home": 12.0165,
+        "away": 6.9896,
+        "total": 19.0061
+      },
+      "shotsOnTarget": {
+        "home": 6.8572,
+        "away": 3.0875,
+        "total": 9.9447
+      },
+      "possession": {
+        "home": 56.610750000000316,
+        "away": 43.38924999999995,
+        "total": 100.00000000000026
+      },
+      "corners": {
+        "home": 2.4327,
+        "away": 1.6008,
+        "total": 4.0335
+      },
+      "fouls": {
+        "home": 10.9186,
+        "away": 14.2517,
+        "total": 25.1703
+      },
+      "yellowCards": {
+        "home": 1.77,
+        "away": 2.2358,
+        "total": 4.0058
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 7411,
+      "draws": 1735,
+      "awayWins": 854
+    },
+    "outcomePercent": {
+      "homeWins": 74.11,
+      "draws": 17.349999999999998,
+      "awayWins": 8.540000000000001
+    },
+    "goalBuckets": {
+      "0": 643,
+      "1": 1682,
+      "2": 2357,
+      "3": 2286,
+      "4": 1593,
+      "5": 859,
+      "6+": 580
+    },
+    "exactGoals": {
+      "0": 643,
+      "1": 1682,
+      "2": 2357,
+      "3": 2286,
+      "4": 1593,
+      "5": 859,
+      "6": 361,
+      "7": 140,
+      "8": 57,
+      "9": 16,
+      "10": 5,
+      "11": 1
+    },
+    "scorelines": {
+      "4-1": 369,
+      "8-0": 4,
+      "4-0": 652,
+      "2-1": 887,
+      "1-1": 792,
+      "3-1": 630,
+      "2-2": 262,
+      "0-0": 643,
+      "0-2": 100,
+      "5-1": 140,
+      "3-0": 1129,
+      "8-1": 7,
+      "1-0": 1325,
+      "2-0": 1465,
+      "7-1": 21,
+      "0-1": 357,
+      "6-1": 36,
+      "6-0": 94,
+      "5-0": 238,
+      "4-2": 88,
+      "5-2": 41,
+      "3-3": 33,
+      "1-2": 245,
+      "2-3": 54,
+      "3-2": 190,
+      "3-4": 10,
+      "1-3": 46,
+      "0-3": 25,
+      "11-0": 1,
+      "6-2": 17,
+      "7-0": 30,
+      "1-4": 8,
+      "5-3": 10,
+      "4-3": 23,
+      "4-4": 5,
+      "0-4": 3,
+      "5-4": 2,
+      "7-2": 6,
+      "8-2": 3,
+      "2-4": 5,
+      "1-5": 1,
+      "6-3": 1,
+      "9-1": 1,
+      "6-4": 1
+    },
+    "maximumGoals": 11,
+    "upsets": {
+      "eligible": 10000,
+      "wins": 854,
+      "percent": 8.540000000000001
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2260.7785000000003,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "iguais-mando",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": false,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Aurora Inventada",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 60.199999999999996,
+        "awayStrength": 60.199999999999996
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 1.2715,
+        "away": 1.1422,
+        "total": 2.4137
+      },
+      "shots": {
+        "home": 9.6101,
+        "away": 8.9289,
+        "total": 18.539
+      },
+      "shotsOnTarget": {
+        "home": 5.0675,
+        "away": 4.723,
+        "total": 9.7905
+      },
+      "possession": {
+        "home": 50.797079999999916,
+        "away": 49.20292000000009,
+        "total": 100.00000000000001
+      },
+      "corners": {
+        "home": 2.0602,
+        "away": 1.9547,
+        "total": 4.0149
+      },
+      "fouls": {
+        "home": 12.4169,
+        "away": 12.7478,
+        "total": 25.1647
+      },
+      "yellowCards": {
+        "home": 1.9809,
+        "away": 2.0375,
+        "total": 4.0184
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 3918,
+      "draws": 2724,
+      "awayWins": 3358
+    },
+    "outcomePercent": {
+      "homeWins": 39.18,
+      "draws": 27.24,
+      "awayWins": 33.58
+    },
+    "goalBuckets": {
+      "0": 875,
+      "1": 2162,
+      "2": 2623,
+      "3": 2087,
+      "4": 1291,
+      "5": 604,
+      "6+": 358
+    },
+    "exactGoals": {
+      "0": 875,
+      "1": 2162,
+      "2": 2623,
+      "3": 2087,
+      "4": 1291,
+      "5": 604,
+      "6": 263,
+      "7": 71,
+      "8": 11,
+      "9": 9,
+      "10": 4
+    },
+    "scorelines": {
+      "2-0": 752,
+      "4-3": 16,
+      "3-0": 332,
+      "3-3": 83,
+      "1-1": 1296,
+      "0-1": 1018,
+      "0-2": 575,
+      "2-2": 465,
+      "0-0": 875,
+      "4-0": 117,
+      "2-1": 769,
+      "2-4": 48,
+      "2-3": 206,
+      "1-0": 1144,
+      "3-2": 189,
+      "0-3": 231,
+      "4-1": 94,
+      "1-3": 298,
+      "1-2": 755,
+      "3-1": 339,
+      "4-2": 81,
+      "1-5": 20,
+      "3-4": 21,
+      "0-4": 72,
+      "1-4": 80,
+      "7-2": 1,
+      "5-1": 26,
+      "4-6": 1,
+      "0-5": 14,
+      "5-0": 21,
+      "6-2": 2,
+      "2-5": 10,
+      "1-6": 1,
+      "5-2": 18,
+      "6-3": 2,
+      "4-5": 4,
+      "5-3": 2,
+      "5-5": 2,
+      "6-0": 5,
+      "3-5": 2,
+      "4-4": 3,
+      "5-4": 1,
+      "6-1": 5,
+      "7-3": 1,
+      "2-6": 1,
+      "7-1": 1,
+      "2-7": 1
+    },
+    "maximumGoals": 10,
+    "upsets": {
+      "eligible": 0,
+      "wins": 0,
+      "percent": null
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2361.148000000001,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "iguais-invertidos",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": false,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Horizonte Imaginário",
+        "away": "Aurora Inventada",
+        "homeStrength": 60.199999999999996,
+        "awayStrength": 60.199999999999996
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 1.2715,
+        "away": 1.1422,
+        "total": 2.4137
+      },
+      "shots": {
+        "home": 9.6101,
+        "away": 8.9289,
+        "total": 18.539
+      },
+      "shotsOnTarget": {
+        "home": 5.0675,
+        "away": 4.723,
+        "total": 9.7905
+      },
+      "possession": {
+        "home": 50.797079999999916,
+        "away": 49.20292000000009,
+        "total": 100.00000000000001
+      },
+      "corners": {
+        "home": 2.0602,
+        "away": 1.9547,
+        "total": 4.0149
+      },
+      "fouls": {
+        "home": 12.4169,
+        "away": 12.7478,
+        "total": 25.1647
+      },
+      "yellowCards": {
+        "home": 1.9809,
+        "away": 2.0375,
+        "total": 4.0184
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 3918,
+      "draws": 2724,
+      "awayWins": 3358
+    },
+    "outcomePercent": {
+      "homeWins": 39.18,
+      "draws": 27.24,
+      "awayWins": 33.58
+    },
+    "goalBuckets": {
+      "0": 875,
+      "1": 2162,
+      "2": 2623,
+      "3": 2087,
+      "4": 1291,
+      "5": 604,
+      "6+": 358
+    },
+    "exactGoals": {
+      "0": 875,
+      "1": 2162,
+      "2": 2623,
+      "3": 2087,
+      "4": 1291,
+      "5": 604,
+      "6": 263,
+      "7": 71,
+      "8": 11,
+      "9": 9,
+      "10": 4
+    },
+    "scorelines": {
+      "2-0": 752,
+      "4-3": 16,
+      "3-0": 332,
+      "3-3": 83,
+      "1-1": 1296,
+      "0-1": 1018,
+      "0-2": 575,
+      "2-2": 465,
+      "0-0": 875,
+      "4-0": 117,
+      "2-1": 769,
+      "2-4": 48,
+      "2-3": 206,
+      "1-0": 1144,
+      "3-2": 189,
+      "0-3": 231,
+      "4-1": 94,
+      "1-3": 298,
+      "1-2": 755,
+      "3-1": 339,
+      "4-2": 81,
+      "1-5": 20,
+      "3-4": 21,
+      "0-4": 72,
+      "1-4": 80,
+      "7-2": 1,
+      "5-1": 26,
+      "4-6": 1,
+      "0-5": 14,
+      "5-0": 21,
+      "6-2": 2,
+      "2-5": 10,
+      "1-6": 1,
+      "5-2": 18,
+      "6-3": 2,
+      "4-5": 4,
+      "5-3": 2,
+      "5-5": 2,
+      "6-0": 5,
+      "3-5": 2,
+      "4-4": 3,
+      "5-4": 1,
+      "6-1": 5,
+      "7-3": 1,
+      "2-6": 1,
+      "7-1": 1,
+      "2-7": 1
+    },
+    "maximumGoals": 10,
+    "upsets": {
+      "eligible": 0,
+      "wins": 0,
+      "percent": null
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2235.839,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  },
+  {
+    "name": "iguais-neutro",
+    "matches": 10000,
+    "baseSeed": 2026,
+    "neutralVenue": true,
+    "config": {
+      "minutes": 90,
+      "homeAdvantage": 0.03,
+      "baseChanceRate": 0.28,
+      "foulRate": 0.28,
+      "cardRate": 0.18,
+      "cornerRate": 0.25,
+      "baseOnTargetRate": 0.44,
+      "baseConversionRate": 0.24
+    },
+    "strengths": [
+      {
+        "home": "Aurora Inventada",
+        "away": "Horizonte Imaginário",
+        "homeStrength": 60.199999999999996,
+        "awayStrength": 60.199999999999996
+      }
+    ],
+    "means": {
+      "goals": {
+        "home": 1.2155,
+        "away": 1.1981,
+        "total": 2.4136
+      },
+      "shots": {
+        "home": 9.3184,
+        "away": 9.1973,
+        "total": 18.5157
+      },
+      "shotsOnTarget": {
+        "home": 4.9074,
+        "away": 4.8725,
+        "total": 9.7799
+      },
+      "possession": {
+        "home": 50.0573100000001,
+        "away": 49.94268999999989,
+        "total": 100
+      },
+      "corners": {
+        "home": 1.9999,
+        "away": 2.0076,
+        "total": 4.0075
+      },
+      "fouls": {
+        "home": 12.6025,
+        "away": 12.555,
+        "total": 25.1575
+      },
+      "yellowCards": {
+        "home": 2.0058,
+        "away": 2.0153,
+        "total": 4.0211
+      },
+      "redCards": {
+        "home": 0,
+        "away": 0,
+        "total": 0
+      }
+    },
+    "outcomes": {
+      "homeWins": 3642,
+      "draws": 2745,
+      "awayWins": 3613
+    },
+    "outcomePercent": {
+      "homeWins": 36.42,
+      "draws": 27.450000000000003,
+      "awayWins": 36.13
+    },
+    "goalBuckets": {
+      "0": 880,
+      "1": 2152,
+      "2": 2613,
+      "3": 2116,
+      "4": 1286,
+      "5": 592,
+      "6+": 361
+    },
+    "exactGoals": {
+      "0": 880,
+      "1": 2152,
+      "2": 2613,
+      "3": 2116,
+      "4": 1286,
+      "5": 592,
+      "6": 263,
+      "7": 71,
+      "8": 16,
+      "9": 7,
+      "10": 4
+    },
+    "scorelines": {
+      "1-0": 1087,
+      "3-3": 88,
+      "3-1": 304,
+      "2-0": 678,
+      "2-3": 214,
+      "1-1": 1306,
+      "0-1": 1065,
+      "0-2": 629,
+      "2-2": 465,
+      "0-0": 880,
+      "3-0": 288,
+      "2-1": 765,
+      "2-4": 59,
+      "3-2": 184,
+      "4-0": 105,
+      "0-3": 262,
+      "1-2": 801,
+      "4-1": 77,
+      "1-3": 320,
+      "4-2": 72,
+      "1-5": 23,
+      "3-4": 22,
+      "0-4": 92,
+      "1-4": 84,
+      "6-2": 5,
+      "5-1": 19,
+      "3-7": 1,
+      "3-5": 5,
+      "2-5": 11,
+      "0-5": 16,
+      "5-0": 17,
+      "4-3": 11,
+      "1-6": 4,
+      "5-2": 18,
+      "7-3": 1,
+      "4-5": 2,
+      "5-4": 2,
+      "5-5": 2,
+      "6-0": 2,
+      "4-4": 4,
+      "6-3": 1,
+      "3-6": 1,
+      "5-3": 1,
+      "6-1": 5,
+      "1-7": 1,
+      "2-7": 1
+    },
+    "maximumGoals": 10,
+    "upsets": {
+      "eligible": 0,
+      "wins": 0,
+      "percent": null
+    },
+    "invariantViolations": 0,
+    "elapsedMs": 2249.195300000001,
+    "engineFactors": {
+      "attributeScale": 100,
+      "referenceStrength": 50,
+      "fitnessFloor": 0.65,
+      "fitnessInfluence": 0.35,
+      "formFloor": 0.8,
+      "formInfluence": 0.2,
+      "outOfPosition": 0.9,
+      "minPossession": 0.25,
+      "maxPossession": 0.75,
+      "strengthRatioExponent": 0.5,
+      "minChance": 0.02,
+      "maxChance": 0.6,
+      "minOnTarget": 0.15,
+      "maxOnTarget": 0.8,
+      "minConversion": 0.05,
+      "maxConversion": 0.65,
+      "possessionPrecision": 10
+    }
+  }
+]

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" fill="none">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#101c25"/><stop offset="1" stop-color="#071311"/></linearGradient>
+    <radialGradient id="light"><stop stop-color="#dfece7" stop-opacity=".3"/><stop offset="1" stop-color="#afc7c4" stop-opacity="0"/></radialGradient>
+    <pattern id="seats" width="22" height="15" patternUnits="userSpaceOnUse"><path d="M3 8h8m5-5h3" stroke="#536c71" stroke-opacity=".4" stroke-width="2"/></pattern>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1600v700H0z"/>
+  <ellipse cx="1240" cy="90" rx="420" ry="260" fill="url(#light)"/>
+  <path d="M0 140Q700 260 1600 28v78Q900 290 0 210z" fill="#1c2b34"/>
+  <path d="M0 160Q730 286 1600 66M0 196Q730 308 1600 101" stroke="#78918d" stroke-opacity=".24" stroke-width="3"/>
+  <g stroke="#657d7b" stroke-opacity=".3"><path d="m80 154 55 61m130-28 50 44m170-29 38 40m175-28 39 41m162-52 40 37m125-66 40 34m132-74 48 24m89-74 52 18"/></g>
+  <g fill="#c9dfd3"><path d="m875 150 36-5 3 7-36 5zm153-30 36-6 3 7-36 6zm159-35 36-8 3 7-36 8zm164-43 36-10 3 7-36 10z"/></g>
+  <path d="M0 275q800 160 1600-28v170q-900 62-1600 0z" fill="#17282b"/>
+  <path d="M0 275q800 160 1600-28v170q-900 62-1600 0z" fill="url(#seats)"/>
+  <path d="M0 319q850 140 1600-17M0 365q850 100 1600-13" stroke="#77918b" stroke-opacity=".25" stroke-width="2"/>
+  <path d="m260 700 440-271h430l470 271z" fill="#192e27"/>
+  <g stroke="#829689" stroke-opacity=".27"><path d="m365 670 369-222h364l350 222zM905 448l-16 222M693 448l-78 57h183l29-57m207 0 28 57h173l-69-57"/><ellipse cx="899" cy="559" rx="80" ry="27"/></g>
+  <path d="M0 464q800 86 1600-13" stroke="#8dac77" stroke-opacity=".3" stroke-width="4"/>
+</svg>

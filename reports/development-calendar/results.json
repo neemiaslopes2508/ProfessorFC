@@ -1,0 +1,475 @@
+{
+  "baseSeed": 2026,
+  "configuration": {
+    "currentDate": "2026-03-31",
+    "seasonStartDate": "2026-04-01",
+    "firstRoundDate": "2026-04-05",
+    "daysBetweenRounds": 7
+  },
+  "currentDate": "2026-06-07",
+  "season": {
+    "id": "dev-competition-season-2026",
+    "competitionId": "dev-competition-1",
+    "year": 2026,
+    "participantClubIds": [
+      "dev-club-1",
+      "dev-club-2",
+      "dev-club-3",
+      "dev-club-4",
+      "dev-club-5",
+      "dev-club-6"
+    ],
+    "status": "FINISHED",
+    "championId": "dev-club-5"
+  },
+  "matches": 30,
+  "completedRounds": 10,
+  "humanClub": "Aurora Inventada",
+  "champion": "Porto das Nuvens",
+  "standings": [
+    {
+      "clubId": "dev-club-5",
+      "played": 10,
+      "wins": 6,
+      "draws": 3,
+      "losses": 1,
+      "goalsFor": 14,
+      "goalsAgainst": 4,
+      "goalDifference": 10,
+      "points": 21,
+      "position": 1,
+      "outcomes": [
+        "champion"
+      ],
+      "club": "Porto das Nuvens"
+    },
+    {
+      "clubId": "dev-club-6",
+      "played": 10,
+      "wins": 4,
+      "draws": 4,
+      "losses": 2,
+      "goalsFor": 16,
+      "goalsAgainst": 11,
+      "goalDifference": 5,
+      "points": 16,
+      "position": 2,
+      "outcomes": [],
+      "club": "Serra dos Ventos"
+    },
+    {
+      "clubId": "dev-club-4",
+      "played": 10,
+      "wins": 3,
+      "draws": 7,
+      "losses": 0,
+      "goalsFor": 12,
+      "goalsAgainst": 9,
+      "goalDifference": 3,
+      "points": 16,
+      "position": 3,
+      "outcomes": [],
+      "club": "Estrela de Papel"
+    },
+    {
+      "clubId": "dev-club-2",
+      "played": 10,
+      "wins": 3,
+      "draws": 3,
+      "losses": 4,
+      "goalsFor": 10,
+      "goalsAgainst": 11,
+      "goalDifference": -1,
+      "points": 12,
+      "position": 4,
+      "outcomes": [],
+      "club": "Horizonte Imaginário"
+    },
+    {
+      "clubId": "dev-club-3",
+      "played": 10,
+      "wins": 3,
+      "draws": 2,
+      "losses": 5,
+      "goalsFor": 10,
+      "goalsAgainst": 15,
+      "goalDifference": -5,
+      "points": 11,
+      "position": 5,
+      "outcomes": [],
+      "club": "Vale do Eclipse"
+    },
+    {
+      "clubId": "dev-club-1",
+      "played": 10,
+      "wins": 0,
+      "draws": 3,
+      "losses": 7,
+      "goalsFor": 7,
+      "goalsAgainst": 19,
+      "goalDifference": -12,
+      "points": 3,
+      "position": 6,
+      "outcomes": [],
+      "club": "Aurora Inventada"
+    }
+  ],
+  "trace": [
+    "2026-04-01 — Temporada iniciada",
+    "2026-04-05 — Rodada 1",
+    "2026-04-05 — 2 partidas CPU processadas",
+    "2026-04-05 — Partida humana PENDENTE: dev-competition-season-2026:league:1:1:1",
+    "2026-04-05 — Ação explícita PLAY_MATCH concluída",
+    "2026-04-05 — Rodada 1 concluída",
+    "2026-04-12 — Rodada 2",
+    "2026-04-12 — 2 partidas CPU processadas",
+    "2026-04-12 — Partida humana PENDENTE: dev-competition-season-2026:league:1:2:1",
+    "2026-04-12 — Ação explícita PLAY_MATCH concluída",
+    "2026-04-12 — Rodada 2 concluída",
+    "2026-04-19 — Rodada 3",
+    "2026-04-19 — 2 partidas CPU processadas",
+    "2026-04-19 — Partida humana PENDENTE: dev-competition-season-2026:league:1:3:1",
+    "2026-04-19 — Ação explícita PLAY_MATCH concluída",
+    "2026-04-19 — Rodada 3 concluída",
+    "2026-04-26 — Rodada 4",
+    "2026-04-26 — 2 partidas CPU processadas",
+    "2026-04-26 — Partida humana PENDENTE: dev-competition-season-2026:league:1:4:1",
+    "2026-04-26 — Ação explícita PLAY_MATCH concluída",
+    "2026-04-26 — Rodada 4 concluída",
+    "2026-05-03 — Rodada 5",
+    "2026-05-03 — 2 partidas CPU processadas",
+    "2026-05-03 — Partida humana PENDENTE: dev-competition-season-2026:league:1:5:1",
+    "2026-05-03 — Ação explícita PLAY_MATCH concluída",
+    "2026-05-03 — Rodada 5 concluída",
+    "2026-05-10 — Rodada 6",
+    "2026-05-10 — 2 partidas CPU processadas",
+    "2026-05-10 — Partida humana PENDENTE: dev-competition-season-2026:league:2:1:1",
+    "2026-05-10 — Ação explícita PLAY_MATCH concluída",
+    "2026-05-10 — Rodada 6 concluída",
+    "2026-05-17 — Rodada 7",
+    "2026-05-17 — 2 partidas CPU processadas",
+    "2026-05-17 — Partida humana PENDENTE: dev-competition-season-2026:league:2:2:1",
+    "2026-05-17 — Ação explícita PLAY_MATCH concluída",
+    "2026-05-17 — Rodada 7 concluída",
+    "2026-05-24 — Rodada 8",
+    "2026-05-24 — 2 partidas CPU processadas",
+    "2026-05-24 — Partida humana PENDENTE: dev-competition-season-2026:league:2:3:1",
+    "2026-05-24 — Ação explícita PLAY_MATCH concluída",
+    "2026-05-24 — Rodada 8 concluída",
+    "2026-05-31 — Rodada 9",
+    "2026-05-31 — 2 partidas CPU processadas",
+    "2026-05-31 — Partida humana PENDENTE: dev-competition-season-2026:league:2:4:1",
+    "2026-05-31 — Ação explícita PLAY_MATCH concluída",
+    "2026-05-31 — Rodada 9 concluída",
+    "2026-06-07 — Rodada 10",
+    "2026-06-07 — 2 partidas CPU processadas",
+    "2026-06-07 — Partida humana PENDENTE: dev-competition-season-2026:league:2:5:1",
+    "2026-06-07 — Ação explícita PLAY_MATCH concluída",
+    "2026-06-07 — Rodada 10 concluída",
+    "2026-06-07 — Temporada concluída",
+    "Campeão: Porto das Nuvens"
+  ],
+  "operations": [
+    {
+      "date": "2026-04-01",
+      "status": "ADVANCED",
+      "processed": [
+        "dev-competition-season-2026:season-start"
+      ],
+      "blocked": [],
+      "simulated": []
+    },
+    {
+      "date": "2026-04-05",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:1:start",
+        "dev-competition-season-2026:league:1:1:2:calendar",
+        "dev-competition-season-2026:league:1:1:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:1:1:1:calendar",
+        "dev-competition-season-2026:round:1:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:1:1:2",
+        "dev-competition-season-2026:league:1:1:3"
+      ]
+    },
+    {
+      "date": "2026-04-05",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:1:1:1:calendar",
+        "dev-competition-season-2026:round:1:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:1:1:1"
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:2:start",
+        "dev-competition-season-2026:league:1:2:2:calendar",
+        "dev-competition-season-2026:league:1:2:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:1:2:1:calendar",
+        "dev-competition-season-2026:round:2:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:1:2:2",
+        "dev-competition-season-2026:league:1:2:3"
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:1:2:1:calendar",
+        "dev-competition-season-2026:round:2:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:1:2:1"
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:3:start",
+        "dev-competition-season-2026:league:1:3:2:calendar",
+        "dev-competition-season-2026:league:1:3:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:1:3:1:calendar",
+        "dev-competition-season-2026:round:3:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:1:3:2",
+        "dev-competition-season-2026:league:1:3:3"
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:1:3:1:calendar",
+        "dev-competition-season-2026:round:3:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:1:3:1"
+      ]
+    },
+    {
+      "date": "2026-04-26",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:4:start",
+        "dev-competition-season-2026:league:1:4:2:calendar",
+        "dev-competition-season-2026:league:1:4:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:1:4:1:calendar",
+        "dev-competition-season-2026:round:4:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:1:4:2",
+        "dev-competition-season-2026:league:1:4:3"
+      ]
+    },
+    {
+      "date": "2026-04-26",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:1:4:1:calendar",
+        "dev-competition-season-2026:round:4:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:1:4:1"
+      ]
+    },
+    {
+      "date": "2026-05-03",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:5:start",
+        "dev-competition-season-2026:league:1:5:2:calendar",
+        "dev-competition-season-2026:league:1:5:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:1:5:1:calendar",
+        "dev-competition-season-2026:round:5:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:1:5:2",
+        "dev-competition-season-2026:league:1:5:3"
+      ]
+    },
+    {
+      "date": "2026-05-03",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:1:5:1:calendar",
+        "dev-competition-season-2026:round:5:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:1:5:1"
+      ]
+    },
+    {
+      "date": "2026-05-10",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:6:start",
+        "dev-competition-season-2026:league:2:1:2:calendar",
+        "dev-competition-season-2026:league:2:1:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:2:1:1:calendar",
+        "dev-competition-season-2026:round:6:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:2:1:2",
+        "dev-competition-season-2026:league:2:1:3"
+      ]
+    },
+    {
+      "date": "2026-05-10",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:2:1:1:calendar",
+        "dev-competition-season-2026:round:6:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:2:1:1"
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:7:start",
+        "dev-competition-season-2026:league:2:2:2:calendar",
+        "dev-competition-season-2026:league:2:2:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:2:2:1:calendar",
+        "dev-competition-season-2026:round:7:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:2:2:2",
+        "dev-competition-season-2026:league:2:2:3"
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:2:2:1:calendar",
+        "dev-competition-season-2026:round:7:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:2:2:1"
+      ]
+    },
+    {
+      "date": "2026-05-24",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:8:start",
+        "dev-competition-season-2026:league:2:3:2:calendar",
+        "dev-competition-season-2026:league:2:3:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:2:3:1:calendar",
+        "dev-competition-season-2026:round:8:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:2:3:2",
+        "dev-competition-season-2026:league:2:3:3"
+      ]
+    },
+    {
+      "date": "2026-05-24",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:2:3:1:calendar",
+        "dev-competition-season-2026:round:8:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:2:3:1"
+      ]
+    },
+    {
+      "date": "2026-05-31",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:9:start",
+        "dev-competition-season-2026:league:2:4:2:calendar",
+        "dev-competition-season-2026:league:2:4:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:2:4:1:calendar",
+        "dev-competition-season-2026:round:9:end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:2:4:2",
+        "dev-competition-season-2026:league:2:4:3"
+      ]
+    },
+    {
+      "date": "2026-05-31",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:2:4:1:calendar",
+        "dev-competition-season-2026:round:9:end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:2:4:1"
+      ]
+    },
+    {
+      "date": "2026-06-07",
+      "status": "BLOCKED",
+      "processed": [
+        "dev-competition-season-2026:round:10:start",
+        "dev-competition-season-2026:league:2:5:2:calendar",
+        "dev-competition-season-2026:league:2:5:3:calendar"
+      ],
+      "blocked": [
+        "dev-competition-season-2026:league:2:5:1:calendar",
+        "dev-competition-season-2026:round:10:end",
+        "dev-competition-season-2026:season-end"
+      ],
+      "simulated": [
+        "dev-competition-season-2026:league:2:5:2",
+        "dev-competition-season-2026:league:2:5:3"
+      ]
+    },
+    {
+      "date": "2026-06-07",
+      "status": "PROCESSED",
+      "processed": [
+        "dev-competition-season-2026:league:2:5:1:calendar",
+        "dev-competition-season-2026:round:10:end",
+        "dev-competition-season-2026:season-end"
+      ],
+      "blocked": [],
+      "simulated": [
+        "dev-competition-season-2026:league:2:5:1"
+      ]
+    }
+  ]
+}

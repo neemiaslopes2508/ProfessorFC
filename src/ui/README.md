@@ -1,0 +1,55 @@
+# Interface do protótipo — Fase 10B.2
+
+## Central do treinador — redesign visual da Fase 9.5
+
+`layouts/Sidebar` e `layouts/TopBar` apresentam a navegação existente, temporada/data da edição e o CTA contextual, preservando callbacks e confirmação de rascunhos em App. Somente páginas funcionais aparecem; partida/resultado aparecem quando disponíveis. Não há configurações fictícias ou novos sistemas.
+
+`DashboardCards` reúne resumo de posição/pontos/rodada/status, próxima partida, equipe e resultados recentes. O mini-campo usa as coordenadas visuais existentes da formação; botões abrem Equipe. Resultados recentes exibem até três partidas humanas confirmadas, sem contabilizar resultados pendentes. Consultas existentes continuam fornecendo dados; nenhuma regra de simulação/calendário é alterada.
+
+`styles.css` centraliza tema escuro, superfícies, bordas, acento/hover, textos, estados semânticos, espaçamento, raios e sombras. Escudos existentes e cores do clube influenciam detalhes e o campo. `public/visuals/command-stadium.svg` é uma ambientação abstrata própria; não usa imagens, fontes ou bibliotecas externas. O visual global alcança Equipe, Elenco, Calendário, Tabela e Match Day sem reestruturar suas funcionalidades.
+
+Validação visual: dashboard desktop e largura de 430 px, navegação existente, acesso ao Match Day e CTA antes/no dia do jogo. Build e lint; nenhum teste novo, suíte completa, temporada, analyzer ou benchmark. Responsividade não foi validada em dispositivo físico. Progresso segue somente em memória e dados seguem fictícios de desenvolvimento.
+
+`App.tsx` mantém sessão e navegação em useState, solicita operações de `application/prototypeSession` e apresenta falhas em banner. `ErrorBoundary` cobre falhas de renderização. Não contém fórmulas de simulação, cálculo de pontos ou seleção de jogadores por posição.
+
+Navegação principal: Dashboard, Equipe, Elenco, Calendário e Tabela. Equipe reúne Escalação e Táticas em abas com navegação por setas/Home/End. Campo, banco, controles e validador leem a mesma projeção do rascunho, enquanto a sessão confirmada permanece a fonte do pré-jogo/motor. Seleção do painel e feedback de arraste são apenas estado de apresentação. Navegação local sem router é suficiente para esta única sessão.
+
+`TacticalPitch` usa posições de `FORMATION_POSITIONS` do domínio; `pitchLayout.ts` contém somente coordenadas visuais dos 15 esquemas. O seletor de Táticas mostra cards com mini-diagramas; navegação e seleção são nativas, e a seleção devolve foco ao resumo. Em telas estreitas, o catálogo se expande no fluxo da página. `PlayerPiece` representa camisa/número temporário, posição e condição, distinguindo posição secundária, improvisação, condição baixa e indisponibilidade. O limite visual de condição baixa (<70) não muda elegibilidade nem o motor.
+
+`App` mantém somente um rascunho de configuração separado da sessão, usando `application/teamSetup`. Salvar confirma escalação, banco, formação, mentalidade e estilo após validação existente; Descartar volta ao último commit. A barra de confirmação permanece acessível ao rolar. Navegação, reinício e avanço com alterações pendentes mostram `LeaveTeamDialog`, um dialog modal nativo com Salvar/Descartar/Cancelar, foco contido, Escape e restauração de foco. Nenhuma simulação ou progressão recebe a projeção de edição.
+
+`presentation.ts` centraliza nomes e abreviações PT-BR, inclusive mensagens de validação, preservando GK/RB/etc. internamente. `PlayerPanel` diferencia chips de posição principal/secundárias e explicita a ausência de secundárias.
+
+`clubIdentity.ts` concentra primaryColor/secondaryColor/crestPath da fixture. Seis SVGs próprios em `public/crests/` aparecem na seleção, sidebar, dashboard, equipe, tabela, calendário e partidas; as camisas do campo usam a identidade do clube. `ClubCrest` substitui asset ausente ou erro de carregamento por iniciais, sem depender da imagem para funcionar. `PlayerAvatar` renderiza SVG inline estilizado a partir do hash visual estável de playerId (`avatarAppearance.ts`), sem RNG da simulação, fotos externas ou armazenamento. O retrato se repete em elenco, perfil, banco e reservas do pré-jogo; sem ID usa silhueta genérica.
+
+`useTeamDrag` usa Pointer Events nativos com captura do ponteiro, limiar de movimento, alvo destacado, cancelamento e feedback de destino inválido. Encaminha banco → titular e titular → titular para `moveTeamPlayer`, sem regras esportivas no hook. Não requer biblioteca. Camisas são botões: clique/Enter abre detalhes e permite escolher uma substituição sem arrastar. `PlayerPanel` é uma seção contextual, com Escape, foco no botão de fechamento e devolução de foco ao controle anterior.
+
+Elenco tem busca por nome sem distinção de acentos, filtro por posição, ordenação, indicadores e resumo derivados em `application/teamOverview`. Overall é calculado com os pesos de atributos da posição, sem persistência; forma/condição aparecem separadamente. Pré-jogo mostra o mesmo time no campo resumido e permite editar Equipe; resultado continua apresentando as estatísticas existentes diretamente.
+
+Tokens de cores, espaçamento, bordas, raios e sombras ficam em `styles.css`. Tema escuro, números tabulares, tabelas compactas, foco visível, hover condicionado ao dispositivo e redução de movimento. Em telas estreitas campo, banco e painel empilham; tabelas têm rolagem própria. Toque é considerado pelos Pointer Events, mas a validação desta fase foi em navegador desktop e viewport estreito, sem dispositivo físico. Não há auto-scroll durante o arraste: use rolagem antes do gesto ou a alternativa por clique/teclado.
+
+Estado fica em memória: recarregar reinicia. Somente uma temporada fictícia. O resultado humano fica pendente até Continuar e pode ser consultado na tabela sem contabilização prematura. As estatísticas são apresentadas diretamente, sem arredondamento. Debug do motor não aparece na UI. Erros impedem iniciar; alertas permitem jogar.
+
+`CalendarPage` apresenta a agenda em grade mensal PT-BR, com escudos, casa/fora, placares confirmados e destaque da data atual. Consome a consulta somente leitura `application/calendarOverview`, que usa `GameCalendar.eventsBetween` e `getScheduledMatch`: jogos do clube humano e início/fim de suas edições. Marcadores técnicos de rodada e jogos de outros clubes não ocupam células. Eventos coincidentes mostram o jogo como principal e um contador dos demais; o dialog nativo apresenta todos, com Escape e restauração de foco. Mês anterior/seguinte e Hoje alteram apenas o mês visual, sem avançar/processar o calendário. Datas civis são apresentadas em UTC, e a tabela tem rolagem horizontal própria em telas estreitas. Não há agendamento, edição de datas ou novas regras temporais.
+
+## Match Day — Fase 10A
+
+`MatchDayPage`, dentro do contrato existente de `PreMatchPage`, usa um estado de cena: HUB → ARRIVAL → MATCH_INTRO → LINEUPS → ENTERING_PITCH → MATCH. Desde a Fase 10B, entrar em MATCH ou Pular apresentação inicia a sessão em zero, sem simular minutos ou avançar a data. `LiveMatchPage` assume a apresentação incremental; `MatchPage` apresenta FULL_TIME e Continuar conserva a confirmação do resultado/tabela. Timers de apresentação são cancelados ao trocar de cena ou desmontar. O timer de reprodução e as substituições da Fase 10B.2 estão descritos abaixo; não há atletas/bola em movimento.
+
+`StadiumArrival` usa ônibus e fachada próprios em SVG, cores/escudo da identidade existente, chegada de 3,2 segundos e luzes discretas. A transição para o campo dura 0,8 segundo; ambas permitem Continuar imediatamente. Cenas usam opacity/transform por 200 ms com o token ease-out existente. Ações por teclado e Pular não animam; prefers-reduced-motion remove movimento/flashes e encurta a espera das cenas automáticas. O foco acompanha o título da etapa, e a timeline pode ser rolada por teclado.
+
+`MatchScoreboard` recebe clubes, score, matchMinute, phase, competição, rodada e status explicitamente. Exibe minuto corrente, INT no intervalo e FIM no encerramento. `MatchPitch` é uma base SVG estática com gramado, linhas, gols, arquibancada abstrata, luzes e placar. `MatchStatisticsPanel` e `MatchTimeline` recebem somente estatísticas/eventos já produzidos, sem antecipar o resultado. A narração não altera nem reordena eventos. Não há novas dependências ou assets externos.
+
+`LiveMatchPage` consome apenas o snapshot publicado pela aplicação. Na Fase 10B os avanços eram manuais; a Fase 10B.2 substitui esses controles por Jogar/Pausar e reprodução automática, com atalhos de intervalo/fim/simulação rápida. FULL_TIME troca para o resultado pendente.
+
+## Live Match Controls — Fase 10B.2
+
+PLAYING/PAUSED é estado da UI em App, separado da phase da MatchSession. Um único interval em LiveMatchPage pede advance(1) a cada 800 ms em 1x, 400 ms em 2x e 200 ms em 4x. useEffectEvent usa os callbacks/snapshot atuais e bloqueia ticks já enfileirados quando pausado ou gerenciando. O effect limpa o timer ao pausar, mudar velocidade, abrir alterações, chegar ao intervalo/fim ou desmontar. Navegar pausa; voltar exige Jogar. Velocidade não chega ao motor nem muda seed/probabilidades.
+
+Fazer alterações e a navegação Equipe durante a partida abrem LiveTeamDialog e pausam. O dialog nativo reutiliza TeamPage, campo, banco, perfis, drag/clique e TacticsControls existentes. Mantém TeamSetup separado até Confirmar alterações; Cancelar/Escape fecha sem aplicar e mantém a pausa. O banco mostrado no rascunho permite desfazer trocas ainda não confirmadas; após confirmar, quem saiu deixa o banco disponível definitivamente. O contador mostra trocas consumidas/limite e planejadas. Não é uma segunda mesa tática nem persistência.
+
+No intervalo, o painel apresenta placar, estatísticas, gols/cartões/substituições e Ajustar equipe, Ajustar tática, Iniciar 2º tempo e Simular restante. Iniciar 2º tempo retoma automaticamente na velocidade escolhida. Até o intervalo para em HALF_TIME; Até o fim e Simular rápido terminam pela aplicação sem animação temporal ou atraso artificial. FULL_TIME não oferece controles de avanço. A timeline apresenta Sai/Entra com os participantes de SUBSTITUTION.
+
+Validação desta fase: somente testes novos/afetados, build/lint e uma partida manual, com 1x → 4x → pausa → troca/tática confirmadas → intervalo → nova formação → segundo tempo → fim rápido. Sem testes de timer/CSS/botões, suíte completa, temporada, analyzer ou benchmark. Atletas/bola em movimento, janelas de substituição, stamina, replay/áudio e Fase 10C permanecem fora do escopo. DEC-032 registra as alterações.
+
+As escalações e destaques vêm de `application/matchDayOverview`, usando a equipe confirmada e a lineup CPU existente. Público/estádio são ambientação fictícia centralizada em `data/fixtures/matchDay`; não representam receitas ou dados oficiais. Técnico humano aparece como Você porque o perfil de carreira ainda não existe. Nesta subfase autorizada de apresentação, a base real permanece fora do escopo. A validação manual cobre apenas uma partida e viewport estreito; validação de toque/Safari em dispositivo físico continua pendente.
