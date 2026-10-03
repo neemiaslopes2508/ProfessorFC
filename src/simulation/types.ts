@@ -1,3 +1,4 @@
+import type { MatchInjuryOptions } from './injuries'
 import type { Club } from '../domain/clubs'
 import type { Player } from '../domain/players'
 import type { Lineup, Tactics, TeamSelectionWarning } from '../domain/tactics'
@@ -19,6 +20,7 @@ export interface MatchSimulationInput {
   readonly random: RandomSource
   readonly context: { readonly neutralVenue: boolean }
   readonly config?: Partial<MatchEngineConfig>
+  readonly injuries?: MatchInjuryOptions
 }
 
 export interface MatchSimulationResult {

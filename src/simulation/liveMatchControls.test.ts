@@ -5,7 +5,7 @@ import { createLineup } from '../domain/tactics'
 import type { Lineup } from '../domain/tactics'
 import { createFixtureMatchInput } from '../../examples/fixtureMatch'
 import { MatchSession } from './matchSession'
-import { advancePrototype, getDevelopmentClubs, humanTeam, moveTeamPlayer, setPrototypeTactics, startPrototype } from '../application/prototypeSession'
+import { advancePrototype, getDevelopmentClubs, humanTeam, moveTeamPlayer, prototypeView, setPrototypeTactics, startPrototype } from '../application/prototypeSession'
 import { captureTeamSetup } from '../application/teamSetup'
 import { advancePrototypeLiveMatch, captureLiveTeamSetup, commitPrototypeLiveTeamSetup, liveTeamEditorSession, startPrototypeLiveMatch } from '../application/liveHumanMatch'
 
@@ -51,7 +51,8 @@ describe('Alterações da partida ao vivo', () => {
 
   it('confirma escalação e tática juntas sem alterar eventos e estatísticas anteriores', () => {
     let session = startPrototype(getDevelopmentClubs()[0].id)
-    session = startPrototypeLiveMatch(advancePrototype(advancePrototype(session)))
+    while (!prototypeView(session).pendingActions.length) session = advancePrototype(session)
+    session = startPrototypeLiveMatch(session)
     session = advancePrototypeLiveMatch(session, 5)
     const before = session.liveMatch!
     let editing = liveTeamEditorSession(session, captureLiveTeamSetup(session))

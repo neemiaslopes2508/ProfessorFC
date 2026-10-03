@@ -9,7 +9,7 @@ import type { PlayerStrength } from './strength'
 export function chooseParticipant(
   players: readonly PlayerStrength[], action: 'offensiveParticipation' | 'foulParticipation', random: RandomSource,
 ): PlayerStrength {
-  const candidates = players.filter(player => POSITION_CONTRIBUTIONS[player.position][action] > 0)
+  const candidates = players.filter(player => player.strength > 0 && POSITION_CONTRIBUTIONS[player.position][action] > 0)
   const weights = candidates.map(player => POSITION_CONTRIBUTIONS[player.position][action] * player.strength)
   const total = weights.reduce((sum, weight) => sum + weight, 0)
   let target = drawRandom(random) * total

@@ -50,12 +50,13 @@ export function calculatePlayerStrength(player: Player, position: Position): Pla
 }
 
 /** Usa somente titulares. Banco não acrescenta força e não participa de ações. */
-export function calculateTeamStrength(team: SimulationTeam, homeModifier: number): TeamStrength {
+export function calculateTeamStrength(team: SimulationTeam, homeModifier: number, unavailable: ReadonlySet<PlayerId> = new Set()): TeamStrength {
   const byId = new Map(team.players.map(player => [player.id, player]))
   const players = team.lineup.positions.map(assignment => {
     const player = byId.get(assignment.playerId)
     if (!player) throw new Error(`Jogador ausente: ${assignment.playerId}.`)
-    return calculatePlayerStrength(player, assignment.position)
+    const strength = calculatePlayerStrength(player, assignment.position)
+    return unavailable.has(player.id) ? Object.freeze({ ...strength, strength: 0 }) : strength
   })
   const formation = FORMATION_MODIFIERS[team.tactics.formation]
   const mentality = MENTALITY_MODIFIERS[team.tactics.mentality]
@@ -68,7 +69,9 @@ export function calculateTeamStrength(team: SimulationTeam, homeModifier: number
   const defense = base.defense * formation.defense * mentality.defense * style.defense * homeModifier
   const midfield = base.midfield * formation.midfield * mentality.midfield * style.midfield * homeModifier
   const attack = base.attack * formation.attack * mentality.attack * style.attack * homeModifier
-  const goalkeeper = players.find(player => player.position === 'GK')
+  const naturalKeeper = players.find(player => player.position === 'GK')
+  const emergency = players.filter(player => player.strength > 0).sort((a, b) => b.strength - a.strength)[0]
+  const goalkeeper = naturalKeeper?.strength ? naturalKeeper : emergency ? Object.freeze({ ...emergency, strength: emergency.strength * ENGINE_FACTORS.emergencyGoalkeeperFactor }) : naturalKeeper
   if (!goalkeeper) throw new Error('Goleiro ausente.')
   return Object.freeze({
     defense, midfield, attack, overall: (defense + midfield + attack) / 3,

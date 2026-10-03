@@ -1,3 +1,4 @@
+import type { PlayerId } from '../core/ids'
 import { drawRandom } from '../core/random'
 import { assertUnique } from '../core/validation'
 import { validateClub } from '../domain/clubs'
@@ -25,7 +26,7 @@ function validateTeam(team: SimulationTeam): readonly TeamSelectionWarning[] {
 }
 
 
-export function prepareMatch(input: MatchSimulationInput) {
+export function prepareMatch(input: MatchSimulationInput, unavailable: ReadonlySet<PlayerId> = new Set()) {
   const config = resolveMatchEngineConfig(input.config)
   if (input.home.club.id === input.away.club.id) throw new Error('Clube não pode jogar contra ele mesmo.')
   if (typeof input.context.neutralVenue !== 'boolean') throw new Error('neutralVenue deve ser booleano.')
@@ -34,8 +35,8 @@ export function prepareMatch(input: MatchSimulationInput) {
     ...input.home.lineup.startingPlayers, ...input.home.lineup.bench,
     ...input.away.lineup.startingPlayers, ...input.away.lineup.bench,
   ], 'Jogadores selecionados nos dois clubes')
-  const home = calculateTeamStrength(input.home, input.context.neutralVenue ? 1 : 1 + config.homeAdvantage)
-  const away = calculateTeamStrength(input.away, 1)
+  const home = calculateTeamStrength(input.home, input.context.neutralVenue ? 1 : 1 + config.homeAdvantage, unavailable)
+  const away = calculateTeamStrength(input.away, 1, unavailable)
   const homePossessionProbability = clamp(home.midfield / (home.midfield + away.midfield), ENGINE_FACTORS.minPossession, ENGINE_FACTORS.maxPossession)
   return Object.freeze({ home, away, homePossessionProbability, config, warnings: Object.freeze(warnings) })
 }
@@ -53,6 +54,7 @@ export function runMatchMinute(minute: number, context: ReturnType<typeof prepar
     events.push(createMatchEvent({ minute, type, clubId, playerId }))
   }
 
+  if (!attacking.players.some(player => player.strength > 0 && player.position !== 'GK') || !defending.players.some(player => player.strength > 0)) return { events, homeHasBall }
   const foulRisk = defending.modifiers.formation.foulRisk * defending.modifiers.mentality.foulRisk * defending.modifiers.style.foulRisk
   if (drawRandom(random) < clamp(config.foulRate * foulRisk, 0, 1)) {
     const offender = chooseParticipant(defending.players, 'foulParticipation', random)

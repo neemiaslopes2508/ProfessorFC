@@ -1,3 +1,4 @@
+import { financialHealth } from '../../application/financialHealth'
 import { useState } from 'react'
 import type { PrototypeSession } from '../../application/prototypeSession'
 import { humanTeam, playerAge } from '../../application/prototypeSession'
@@ -61,6 +62,7 @@ export function MarketPage({ session, onAction }: { session: PrototypeSession; o
   const rows = queryTransferMarket(session, filters)
   const selectedRow = queryTransferMarket(session, { name: '', position: 'ALL', club: 'ALL', order: 'name' }).find(row => row.player.id === selected)
   const human = humanTeam(session)
+  const health = financialHealth(session, human.club.id)
   const negotiations = session.market.negotiations.filter(item => group === 'completed' ? item.status === 'COMPLETED' : item.status !== 'COMPLETED' && (group === 'received' ? item.sellingClubId === human.club.id : item.buyingClubId === human.club.id))
   const act: Action = operation => { const success = onAction(operation); if (success) setMessage('Mercado atualizado. Confira a resposta e o orçamento.'); return success }
   function numeric(key: 'minAge' | 'maxAge' | 'minOverall', value: string) { setFilters(current => ({ ...current, [key]: value === '' ? undefined : Number(value) })) }
@@ -75,8 +77,9 @@ export function MarketPage({ session, onAction }: { session: PrototypeSession; o
   ] as const
   const emptyTab = tabs.find(tab => tab.id === group)!
   return <div className="market-page"><span className="eyebrow">Central de negócios · Base fictícia</span><h1>Mercado</h1>
-    <div className="panel market-summary"><div><small>Orçamento disponível</small><strong>{money(human.club.finances.transferBudget.cents)}</strong><span>{human.club.name}</span></div><div><small>À venda</small><strong>{session.market.listedPlayerIds.length}</strong><span>{session.market.history.length} transferências concluídas</span></div><button className="primary" onClick={() => act(() => refreshTransferMarket(session))}>ATUALIZAR MERCADO</button></div>
+    <div className="panel market-summary"><div><small>Orçamento disponível real</small><strong>{money(health.availableTransferBudget)}</strong><small>Orçamento aprovado: {money(health.approvedTransferBudget)}</small><span>{human.club.name}</span></div><div><small>À venda</small><strong>{session.market.listedPlayerIds.length}</strong><span>{session.market.history.length} transferências concluídas</span></div><button className="primary" onClick={() => act(() => refreshTransferMarket(session))}>ATUALIZAR MERCADO</button></div>
     <PayrollSummary session={session} />
+    {health.alerts.length > 0 && <p className="notice warning">{health.alerts.join(' ')}</p>}
     <p className="muted">Atualizar mercado solicita propostas por seus jogadores listados. Contratos e avaliações são simplificados de desenvolvimento.</p>
     {(session.liveMatch || session.pendingMatch) && <p className="notice">Conclua e confirme a partida para finalizar transferências.</p>}
     {message && <p role="status" className="notice">{message}</p>}

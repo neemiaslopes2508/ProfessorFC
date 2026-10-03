@@ -782,3 +782,160 @@ button.calendar-day:focus-visible { outline-offset: -3px; }
 .contract-expiring { color: #e8cd7b; }
 .squad-workspace td small { display: block; color: var(--muted); margin-top: .3rem; font-size: .65rem; }
 @media(max-width:650px) { .payroll-summary .contract-finances { grid-template-columns: 1fr 1fr; } }
+.finance-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .8rem; margin: 1.5rem 0; }
+.finance-metric { display: grid; align-content: start; gap: .6rem; margin: 0; }
+.finance-metric small { color: var(--muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; }
+.finance-metric strong { font-size: clamp(1.2rem,2vw,1.8rem); font-variant-numeric: tabular-nums; }
+.finance-metric span { font-size: .7rem; color: var(--muted); }
+.finance-metric.positive { border-top: 2px solid var(--accent); }
+.finance-metric.negative { border-top: 2px solid #f29a91; }
+.finance-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.finance-panels .panel { min-width: 0; }
+.finance-equation { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; padding: 1rem 0; }
+.finance-equation > div, .finance-transfer-summary > div, .dashboard-finance > div { display: grid; gap: .5rem; }
+.finance-equation small, .finance-transfer-summary small, .dashboard-finance small { color: var(--muted); font-size: .75rem; }
+.finance-equation strong, .finance-transfer-summary strong { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.finance-income, .finance-metric.positive strong { color: var(--accent); }
+.finance-expense, .finance-metric.negative strong { color: #f29a91; }
+.finance-wage-meter { display: block; width: 100%; height: 1rem; margin: .8rem 0; accent-color: var(--accent); }
+.finance-transfer-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; }
+.finance-filters { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+.finance-filters [role="group"] { display: flex; gap: .4rem; flex-wrap: wrap; }
+.finance-filters button[aria-pressed="true"] { background: var(--accent); color: #17261c; border-color: var(--accent); }
+.finance-filters label { display: flex; align-items: center; gap: .7rem; color: var(--muted); font-size: .8rem; }
+.finance-amount { white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; }
+.finance-empty { border: 1px dashed var(--border); padding: 1.2rem; color: var(--muted); font-size: .85rem; line-height: 1.6; }
+.finance-categories { list-style: none; margin: 0; padding: 0; }
+.finance-categories li { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--border); padding: .8rem 0; font-size: .85rem; }
+.dashboard-finance { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 1rem; }
+.dashboard-finance h2 { margin: 0; }
+.dashboard-finance button { margin-left: auto; }
+@media(max-width:800px) { .finance-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .finance-panels { grid-template-columns: 1fr; } }
+@media(max-width:500px) { .finance-metrics, .finance-transfer-summary { grid-template-columns: 1fr; } .finance-filters label, .finance-filters select { width: 100%; } .dashboard-finance button { width: 100%; margin: 0; } }
+
+.financial-health { margin: 1rem 0; border-left: 3px solid var(--accent); }
+.financial-health.health-warning { border-left-color: #e5c35b; }
+.financial-health.health-critical { border-left-color: #f29a91; }
+.financial-alerts { padding-left: 1.4rem; color: #e5c35b; line-height: 1.7; }
+.health-critical .financial-alerts { color: #f29a91; }
+
+.stadium-summary { display: grid; grid-template-columns: minmax(240px,1fr) 2fr; gap: 2rem; margin: 1rem 0; }
+.stadium-map { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; border: 2px solid var(--border); border-radius: 3rem; padding: 1.5rem; background: var(--surface); text-align: center; }
+.stadium-map > span { padding: .8rem; border: 1px solid var(--border); }
+.stadium-map small { display: block; color: var(--muted); font-size: .75rem; margin-top: .4rem; }
+.stadium-map .stadium-map-pitch { grid-column: 1 / -1; background: #203b2c; color: var(--accent); }
+.stadium-sectors { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin-bottom: 1rem; }
+.stadium-sectors meter { width: 100%; accent-color: var(--accent); }
+.stadium-page > .panel:last-child { margin-top: 1rem; }
+@media(max-width:700px) { .stadium-summary, .stadium-sectors { grid-template-columns: 1fr; } }
+
+/* Gestão visual do estádio: cena SVG estática e painel por setor. */
+.stadium-heading { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+.stadium-heading h1 { margin:.4rem 0; }
+.stadium-top-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-bottom:1rem; }
+.stadium-top-metrics article { display:grid; gap:.7rem; padding:1.2rem 1.5rem; }
+.stadium-top-metrics small { text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-size:.7rem; }
+.stadium-top-metrics strong { font-size:1.65rem; font-variant-numeric:tabular-nums; }
+.stadium-top-metrics article:nth-child(3) strong { color:var(--accent); }
+.stadium-top-metrics span { font-size:.75rem; color:var(--muted); }
+.stadium-management-grid { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(280px,1fr); gap:1rem; align-items:stretch; }
+.stadium-model-panel { padding:1.25rem; overflow:hidden; background:linear-gradient(140deg,#172c33,#0c1c26); }
+.stadium-model-panel h2 { margin:.25rem 0; }
+.stadium-view-tag { color:#849b9f; font: .65rem monospace; letter-spacing:.08em; }
+.stadium-pixel-model { width:100%; height:auto; display:block; image-rendering:pixelated; margin:.7rem 0; border:1px solid #34494c; }
+.stadium-model-sector { cursor:pointer; outline:none; }
+.stadium-model-sector:hover .stadium-sector-outline, .stadium-model-sector:focus-visible .stadium-sector-outline { stroke:#c6f878; stroke-width:5; }
+.stadium-sector-tabs { display:flex; flex-wrap:wrap; gap:.4rem; }
+.stadium-sector-tabs button { flex:1; font-size:.75rem; padding:.6rem .7rem; }
+.stadium-sector-tabs button[aria-pressed="true"] { color:#142316; background:var(--accent); border-color:var(--accent); }
+.stadium-model-help { font-size:.73rem; margin-bottom:0; }
+.stadium-sector-editor { border-top:3px solid var(--accent); padding:1.4rem; }
+.stadium-sector-editor h2 { font-size:1.8rem; margin:.65rem 0 .4rem; }
+.stadium-sector-editor > .currency-field { margin:1.2rem 0 .65rem; }
+.stadium-sector-editor .currency-field input { font-size:1.3rem; }
+.stadium-occupancy { margin:1.5rem 0; }
+.stadium-occupancy > div { display:flex; justify-content:space-between; gap:1rem; align-items:center; }
+.stadium-occupancy small, .stadium-occupancy > span { color:var(--muted); font-size:.75rem; }
+.stadium-occupancy strong { color:var(--accent); font-size:1.2rem; }
+.stadium-occupancy meter { display:block; width:100%; height:.85rem; margin:.7rem 0; accent-color:var(--accent); }
+.stadium-sector-numbers { display:block; margin:0; }
+.stadium-sector-numbers > div { display:flex; justify-content:space-between; gap:1rem; border-top:1px solid var(--border); padding:.9rem 0; align-items:baseline; }
+.stadium-sector-numbers dt { font-size:.75rem; color:var(--muted); }
+.stadium-sector-numbers dd { margin:0; font-weight:700; font-size:1rem; }
+.stadium-last-sector { margin-top:1.2rem; border-top:1px solid var(--border); padding-top:1rem; }
+.stadium-last-sector p { font-size:.8rem; line-height:1.7; }
+.stadium-next-home { display:flex; gap:1rem; align-items:center; margin:1rem 0; padding:1rem 1.4rem; }
+.stadium-next-home strong { display:block; margin:.4rem 0; font-size:.85rem; }
+.stadium-next-home p { font-size:.75rem; margin:0; }
+.stadium-next-icon { color:var(--accent); font-size:2rem; }
+.stadium-price-actions { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.stadium-price-actions > div:first-child { display:grid; gap:.4rem; }
+.stadium-price-actions small { color:var(--muted); font-size:.7rem; }
+@media(max-width:1000px) { .stadium-management-grid { grid-template-columns:1fr; } .stadium-sector-editor { min-width:0; } }
+@media(max-width:650px) { .stadium-heading, .stadium-price-actions { align-items:stretch; flex-direction:column; } .stadium-top-metrics { grid-template-columns:1fr; } .stadium-top-metrics article { grid-template-columns:1fr auto; } .stadium-top-metrics strong { font-size:1.3rem; } .stadium-top-metrics span { grid-column:1/-1; } .stadium-price-actions .actions { display:flex; flex-wrap:wrap; } .stadium-model-panel { padding:.75rem; } .stadium-sector-tabs button { flex-basis:40%; } }
+
+.facility-summary { display:flex; flex-wrap:wrap; gap:2.5rem; margin:1rem 0; }
+.facility-summary span { display:grid; gap:.6rem; color:var(--muted); font-size:.8rem; }
+.facility-summary strong { color:var(--text); font-size:1.35rem; }
+.facility-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.facility-art { display:block; width:100%; height:150px; background:#0c202a; image-rendering:pixelated; margin-bottom:1.2rem; }
+.facility-card h2 { font-size:1.2rem; }
+.facility-card .section-heading { flex-wrap:wrap; }
+.facility-levels { display:flex; gap:.35rem; margin:.7rem 0 1rem; }
+.facility-levels span { width:24px; height:5px; background:#3b5055; }
+.facility-levels .active { background:var(--accent); }
+.facility-benefit { font-size:.85rem; line-height:1.6; min-height:2.8rem; }
+.training-panel { display:grid; grid-template-columns:minmax(220px,1fr) minmax(180px,260px); gap:1rem 1.5rem; margin:1.5rem 0; padding:1.25rem; }
+.training-panel h2 { margin:.2rem 0 .5rem; }
+.training-panel label { display:grid; align-content:start; gap:.45rem; color:var(--muted); font-size:.85rem; }
+.training-panel select { width:100%; }
+.training-cycle { grid-column:1/-1; border-top:1px solid var(--line); padding-top:.85rem; }
+.training-cycle ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.4rem 1.25rem; padding:0; list-style:none; }
+.training-cycle li { display:flex; justify-content:space-between; gap:1rem; font-size:.88rem; }
+.player-development { margin-top:1rem; border-top:1px solid var(--line); padding-top:.75rem; }
+.player-development h3 { font-size:.9rem; }
+.player-development p { display:flex; justify-content:space-between; margin:.3rem 0; }
+.academy-panel { margin: 1rem 0; }
+.academy-list { display:grid; gap:.45rem; margin-top:1rem; }
+.academy-player { display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:.8rem; width:100%; text-align:left; padding:.65rem; border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--surface-raised); color:var(--text); }
+.academy-player .player-avatar { width:38px; height:46px; }
+.academy-player > span:nth-child(2) { display:grid; gap:.2rem; }
+.academy-player small { color:var(--muted); }
+.academy-potential { text-align:right; color:var(--accent); }
+.academy-potential small { display:block; }
+.academy-profile { margin-top:1rem; }
+.academy-profile .player-panel { position:static; width:auto; max-height:none; }
+.academy-history { margin-top:1rem; color:var(--muted); }
+.academy-history summary { cursor:pointer; color:var(--text); }
+@media (max-width:600px) { .academy-player { grid-template-columns:36px minmax(0,1fr); } .academy-potential { grid-column:2; text-align:left; } }
+.stadium-expansion-info { margin:1.2rem 0; padding:1rem; border:1px solid var(--line); background:var(--surface-raised); }
+.stadium-expansion-info h3 { margin:.1rem 0 .8rem; }
+.stadium-expansion-info p { display:flex; justify-content:space-between; gap:1rem; font-size:.85rem; }
+.stadium-sector-editor .stadium-expansion-info .notice { line-height:1.7; }
+.stadium-model-sector .stadium-sector-outline { transition:fill .15s ease; }
+@media (max-width:700px) { .training-panel { grid-template-columns:1fr; } .training-cycle { grid-column:auto; } }
+.facility-card.in-construction { border-top:3px solid #d6b966; }
+.facility-card dl, .facility-confirm dl { display:grid; grid-template-columns:1fr auto; gap:.75rem; font-size:.85rem; }
+.facility-card dd, .facility-confirm dd { margin:0; font-weight:700; }
+.facility-confirm { width:min(600px,calc(100vw - 2rem)); max-height:90vh; overflow:auto; }
+@media(max-width:700px) { .facility-grid { grid-template-columns:1fr; } .facility-summary { gap:1.4rem; } }
+
+.finance-section-tabs { display:flex; gap:.6rem; margin:1rem 0; border-bottom:1px solid var(--border); }
+.finance-section-tabs button[aria-selected="true"] { border-color:var(--accent); color:var(--accent); }
+.commercial-panel { display:grid; gap:1.1rem; }
+.commercial-panel > header h2 { margin:.25rem 0; }
+.commercial-panel > header p { margin:.25rem 0 0; }
+.sponsor-offers { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.sponsor-offer { display:flex; flex-direction:column; gap:.75rem; }
+.sponsor-offer h3, .sponsor-current h3 { margin:0; }
+.sponsor-offer dl { display:grid; gap:.7rem; margin:0; }
+.sponsor-offer dl > div { display:grid; gap:.2rem; }
+.sponsor-offer dt, .sponsor-current small { color:var(--muted); font-size:.72rem; }
+.sponsor-offer dd { margin:0; font-weight:650; }
+.sponsor-offer .actions { margin-top:auto; display:flex; flex-wrap:wrap; gap:.5rem; }
+.sponsor-current { display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:1rem; align-items:start; }
+.sponsor-current > div { display:grid; gap:.4rem; }
+.sponsor-current-objective { grid-column:1/-1; border-top:1px solid var(--border); padding-top:.8rem; }
+.sponsor-current-objective span { color:var(--muted); }
+@media(max-width:900px) { .sponsor-offers { grid-template-columns:1fr 1fr; } .sponsor-current { grid-template-columns:1fr 1fr; } }
+@media(max-width:580px) { .sponsor-offers, .sponsor-current { grid-template-columns:1fr; } .sponsor-current-objective { grid-column:auto; } }

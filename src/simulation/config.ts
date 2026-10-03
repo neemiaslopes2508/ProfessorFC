@@ -94,7 +94,7 @@ export const POSITION_CONTRIBUTIONS: Readonly<Record<Position, PositionContribut
 
 /** Limites e normalizações internos centralizados, sem parâmetros dispersos nas fórmulas. */
 export const ENGINE_FACTORS = Object.freeze({
-  attributeScale: 100, referenceStrength: 50,
+  attributeScale: 100, referenceStrength: 50, emergencyGoalkeeperFactor: 0.4,
   fitnessFloor: 0.65, fitnessInfluence: 0.35, formFloor: 0.8, formInfluence: 0.2,
   outOfPosition: 0.9, minPossession: 0.25, maxPossession: 0.75,
   strengthRatioExponent: 0.5,

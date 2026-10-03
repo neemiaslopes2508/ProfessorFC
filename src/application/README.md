@@ -63,3 +63,31 @@ contractLifecycle projeta folha/status e processa vencimentos e PLAYER_WAGES na 
 Vencimento preserva contrato EXPIRED e Player em freeAgents com clubId=null, retira referências do elenco/escalação/listagem e cancela negociações pendentes. Não altera a base inicial GameData. Se faltar substituto, mantém slots incompletos para a validação existente exigir reorganização, sem impedir vencimento. Renovação termina o contrato anterior; signFreeAgent cria vínculo e banco sem taxa/receita ao clube antigo, sujeito ao teto salarial. Totais salariais não são persistidos. Sem save, bônus ou obrigações trabalhistas.
 
 A sessão fictícia agora inicia com 120 contratos mensais de desenvolvimento (R$ 3.000–4.900 por atleta). Um reserva de cada clube vence em 02/04/2026; os demais em 01/04/2027. Isso permite conferir cobrança, expiração e contratação em dois avanços sem disputar temporada. Não representa dados oficiais.
+
+## Centro Financeiro — Fase 12A
+
+financeOverview deriva o resumo mensal/histórico/categorias do ledger comum de finance/types. completeTransfer registra PLAYER_PURCHASE e PLAYER_SALE junto à conclusão atômica existente. Não muda preço, saldo, orçamento ou regra de contrato; adiciona a trilha financeira dessas movimentações. PayrollSummary busca especificamente PLAYER_WAGES para manter seu último pagamento correto depois de compras/vendas. Ver src/finance/README.md para limites de período e fontes de verdade.
+
+## Receitas da temporada — Fase 12B
+
+seasonRevenue coordena bilheteria do mandante, patrocínio mensal e prêmio final configurado, creditando caixa e ledger juntos com IDs únicos. advancePrototype e continuePrototypeMatch integram o processamento; nenhuma regra foi adicionada ao GameCalendar ou ao MatchEngine. Configuração fictícia e invariantes: src/finance/README.md. Valores permanecem exclusivamente de desenvolvimento.
+
+## Saúde financeira — Fase 12C
+
+financialHealth expõe FinancialHealthSnapshot por clube: status, projeções conservadoras, reserva salarial, orçamento efetivo, alertas e tendência de três meses. A aplicação de transferências revalida orçamento/folha antes das mutações. Finanças, Mercado e Dashboard consomem o mesmo cálculo; não há avaliação de diretoria. developmentFinanceScenario é ativado pela UI somente em DEV para QA dos bloqueios. Fórmulas e limites: src/finance/README.md.
+
+## Estádio — Fase 12D
+
+stadiumManagement expõe prévias por setor, edição atômica de preços e snapshot da admissão por partida. prototypeSession e liveHumanMatch fixam esse snapshot ao iniciar jogo humano; seasonRevenue o liquida uma única vez no ledger existente. Estimativa e resultado usam o mesmo contexto, com variação determinística exclusiva da bilheteria. GameCalendar, Club e MatchEngine não recebem regras de demanda. Ver src/finance/README.md.
+
+## Estrutura do clube — Fase 12E
+
+clubFacilities coordena investimento imediato, obra por instalação, conclusão por data e manutenção/receita comercial mensal no ledger. nextFacilityDate integra datas à escolha do avanço da sessão; processFacilityDate respeita ordem de conclusão antes de pagamentos. financialHealth projeta manutenção e Loja vigentes. Configuração, limites e caminho curto de QA: src/finance/README.md.
+
+## Lesões — Fase 12E.1
+
+injuryLifecycle registra eventos INJURY por partida/minuto/jogador uma única vez, inclusive resultados CPU. PrototypeSession guarda histórico independente do seed de dados. nextInjuryDate integra as datas ao avanço existente: INJURED → RECOVERING na data prevista → AVAILABLE após dois dias de readaptação. Elenco, painel e Dashboard leem o mesmo status. Recuperação acompanha também agentes livres. O DM vigente na ocorrência reduz o prazo base em 0/5/10/15/20% (níveis 1–5), com mínimo de um dia; obras futuras não alteram datas passadas. Cenários locais DEV: ?injuryScenario=short força uma lesão muscular de cinco dias no primeiro jogo humano; ?injuryScenario=medical usa o mesmo cenário com DM 5 (quatro dias). Ambos desativam lesões aleatórias durante QA.
+
+### Categorias de base (Fase 12E.3)
+
+`academy.ts` cria duas fornadas fictícias por temporada (1º de abril e 1º de setembro), com fluxo aleatório derivado de carreira, clube, temporada e janela. O nível da Base altera quantidade, distribuição de potencial e desenvolvimento mensal. Atletas reutilizam `Player`, ficam em registros separados enquanto `ACADEMY` e mantêm histórico mínimo após promoção/dispensa. Promover reaproveita o mesmo `playerId` e adiciona o atleta ao elenco profissional sem criar contrato ou limite de elenco. `playerDevelopment.ts` processa os jovens ativos no mesmo ciclo mensal com fluxo `academy-training` e modificador próprio da Base. Não há categorias competitivas, sub-elencos ou novos jogadores fora do clube humano.

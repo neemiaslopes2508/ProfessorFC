@@ -1,6 +1,9 @@
-export type IconName = 'dashboard' | 'team' | 'squad' | 'calendar' | 'table' | 'arrow' | 'trophy' | 'points' | 'round' | 'play' | 'market'
+export type IconName = 'dashboard' | 'team' | 'squad' | 'calendar' | 'table' | 'arrow' | 'trophy' | 'points' | 'round' | 'play' | 'market' | 'finance' | 'stadium' | 'facilities'
 
 const paths: Record<IconName, string> = {
+  facilities: 'M3 21V10l6-4 6 4v11M15 21V3h6v18M7 13h4M7 17h4M17 7h2M17 11h2M17 15h2M2 21h20',
+  stadium: 'M3 8l9-4 9 4v12H3zM7 10v6M17 10v6M3 13h18M8 20v-4h8v4',
+  finance: 'M3 6h18v14H3zM3 9h18M16 12h5v5h-5zM17 14h1M5 6V3h13v3',
   market: 'M3 7h17M16 3l4 4-4 4M21 17H4M8 13l-4 4 4 4',
   dashboard: 'M3 11 12 3l9 8M5 10v11h5v-7h4v7h5V10',
   team: 'M3 4h18v16H3zM12 4v16M3 12h18M3 8h4v8H3M21 8h-4v8h4',

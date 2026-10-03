@@ -13,6 +13,7 @@ function narration(event: MatchEvent, club: string, player?: string, playerOut?:
     case 'FOUL': return `Falta cometida por ${who}.`
     case 'YELLOW_CARD': return `Cartão amarelo para ${who}.`
     case 'CORNER': return `Escanteio para ${club}. ${player ? `${player} na cobrança.` : ''}`
+    case 'INJURY': return `LESÃO — ${who}. ${who} sente ${String(event.metadata?.label ?? 'uma lesão').toLocaleLowerCase('pt-BR')} e ${event.metadata?.canContinue ? 'pode continuar na partida.' : 'não consegue continuar.'}`
     case 'SUBSTITUTION': return `SUBSTITUIÇÃO — Sai ${playerOut ?? 'um jogador'}. Entra ${who}.`
     default: return `${eventLabels[event.type]} — ${who}.`
   }

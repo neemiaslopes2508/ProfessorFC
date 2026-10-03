@@ -1,3 +1,7 @@
+import { injuryEvent } from './injuries'
+import type { PlayerId } from '../core/ids'
+import { createSeededRandomSource, seedFromString } from '../core/random'
+import type { RandomSource } from '../core/random'
 import { createId, validateId } from '../core/ids'
 import type { ClubId, MatchId } from '../core/ids'
 import { createLineup, createTactics, validateTeamSelection } from '../domain/tactics'
@@ -56,6 +60,7 @@ function captureTeam(team: SimulationTeam): SimulationTeam {
 export class MatchSession {
   readonly #matchId: MatchId
   readonly #input: MatchSimulationInput
+  readonly #injuryRandom: RandomSource
   #home: SimulationTeam
   #away: SimulationTeam
   #context: ReturnType<typeof prepareMatch>
@@ -63,6 +68,8 @@ export class MatchSession {
   #phase: MatchPhase = 'PRE_MATCH'
   #events: MatchEvent[] = []
   #booked = new Set<string>()
+  #injured = new Set<PlayerId>()
+  #unavailable = new Set<PlayerId>()
   #homePossessionTicks = 0
   #possessionClubId?: ClubId
   readonly #rules: MatchSessionRules
@@ -72,6 +79,8 @@ export class MatchSession {
   constructor(input: MatchSimulationInput & { readonly matchId: MatchId; readonly rules?: Partial<MatchSessionRules> }) {
     validateId(input.matchId, 'MatchId')
     this.#matchId = input.matchId
+    this.#injuryRandom = input.random.fork?.('injuries')
+      ?? createSeededRandomSource(seedFromString(`match:${input.matchId}:injuries`))
     this.#rules = resolveMatchSessionRules(input.rules)
     this.#context = prepareMatch(input)
     this.#home = captureTeam(input.home)
@@ -113,6 +122,15 @@ export class MatchSession {
       const tick = runMatchMinute(minute, this.#context, this.#home.club.id, this.#away.club.id, this.#input.random, this.#booked)
       this.#minute = minute
       this.#events.push(...tick.events)
+      const injury = injuryEvent(minute, [this.#home, this.#away], this.#injured, this.#injuryRandom, this.#input.injuries)
+      if (injury?.playerId) {
+        this.#events.push(injury)
+        this.#injured.add(injury.playerId)
+        if (injury.metadata?.canContinue === false) {
+          this.#unavailable.add(injury.playerId)
+          this.#context = prepareMatch({ ...this.#input, home: this.#home, away: this.#away }, this.#unavailable)
+        }
+      }
       if (tick.homeHasBall) this.#homePossessionTicks++
       this.#possessionClubId = tick.homeHasBall ? this.#home.club.id : this.#away.club.id
       if (this.#minute === duration) this.#phase = 'FULL_TIME'
@@ -139,6 +157,7 @@ export class MatchSession {
     const tactics = createTactics(tacticalInput)
     const lineup = createLineup(input)
     const team = clubId === this.#home.club.id ? this.#home : this.#away
+    if ([...lineup.startingPlayers, ...lineup.bench].some(id => this.#unavailable.has(id) && !team.lineup.startingPlayers.includes(id))) throw new Error('Jogador lesionado não pode retornar à partida.')
     const validation = validateTeamSelection(lineup, tactics, team)
     if (!validation.valid) throw new Error(`Tática incompatível com a escalação: ${validation.errors.map(error => error.message).join('; ')}`)
     const history = clubId === this.#home.club.id ? this.#homeChanges : this.#awayChanges
@@ -146,7 +165,7 @@ export class MatchSession {
     const updated = Object.freeze({ ...team, tactics, lineup })
     const home = clubId === this.#home.club.id ? updated : this.#home
     const away = clubId === this.#away.club.id ? updated : this.#away
-    const context = prepareMatch({ ...this.#input, home, away })
+    const context = prepareMatch({ ...this.#input, home, away }, this.#unavailable)
     this.#home = home
     this.#away = away
     this.#context = context

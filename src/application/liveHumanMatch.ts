@@ -1,3 +1,5 @@
+import { registerMatchInjuries } from './injuryLifecycle'
+import { lockMatchAdmission } from './stadiumManagement'
 import { createLineup } from '../domain/tactics'
 import type { Tactics } from '../domain/tactics'
 import type { MatchSession, MatchSnapshot } from '../simulation'
@@ -13,6 +15,7 @@ const engines = new WeakMap<MatchSnapshot, MatchSession>()
 
 function publish(session: PrototypeSession, engine: MatchSession): PrototypeSession {
   const snapshot = engine.snapshot()
+  session = registerMatchInjuries(session, snapshot.matchId, snapshot.events, session.game.calendar.currentDate)
   if (session.liveMatch) engines.delete(session.liveMatch)
   if (snapshot.phase === 'FULL_TIME') {
     return Object.freeze({ ...session, liveMatch: undefined,
@@ -35,7 +38,7 @@ export function startPrototypeLiveMatch(session: PrototypeSession): PrototypeSes
   if (!validation.valid) throw new Error(`Corrija a escalação: ${validation.errors.map(error => error.message).join(' ')}`)
   const matchId = prototypeView(session).pendingActions[0]?.matchId
   if (!matchId) throw new Error('Avance o calendário até sua próxima partida.')
-  return publish(session, startHumanMatchSession(session.game, matchId, prototypeMatchDependencies(session)))
+  return publish(lockMatchAdmission(session, matchId), startHumanMatchSession(session.game, matchId, prototypeMatchDependencies(session)))
 }
 
 export function advancePrototypeLiveMatch(session: PrototypeSession, minutes: number): PrototypeSession {

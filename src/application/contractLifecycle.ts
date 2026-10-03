@@ -3,7 +3,6 @@ import type { ClubId } from '../core/ids'
 import { addGameDays, differenceInGameDays } from '../core/date'
 import { assertDate, assertIntegerRange } from '../core/validation'
 import { createMoneyFromCents, subtractMoney } from '../core/money'
-import type { Money } from '../core/money'
 import { createContract } from '../domain/contracts'
 import { createClub } from '../domain/clubs'
 import { createPlayer } from '../domain/players'
@@ -11,7 +10,6 @@ import type { Player } from '../domain/players'
 import type { SimulationTeam } from '../simulation'
 
 export const CONTRACT_TIME_CONFIG = Object.freeze({ paymentDay: 1, expiringDays: 180 })
-export interface WageTransaction { readonly id: string; readonly type: 'PLAYER_WAGES'; readonly clubId: ClubId; readonly date: string; readonly month: string; readonly amount: Money }
 export function activeContract(session: PrototypeSession, playerId: Player['id'], date = session.game.calendar.currentDate) {
   const contracts = session.market.contracts.filter(contract => contract.playerId === playerId && contract.status === 'ACTIVE' && contract.startDate <= date && date < contract.endDate)
   if (contracts.length > 1) throw new Error('Jogador possui contratos ativos incompatíveis.')
@@ -31,7 +29,7 @@ export function playerContractStatus(session: PrototypeSession, playerId: Player
   if (!contract) return session.market.contracts.some(item => item.playerId === playerId && item.status === 'EXPIRED') ? 'EXPIRED' : 'NO_CONTRACT'
   return differenceInGameDays(session.game.calendar.currentDate, contract.endDate) <= CONTRACT_TIME_CONFIG.expiringDays ? 'EXPIRING' : 'ACTIVE'
 }
-function paymentDates(start: string, end: string, day: number) {
+export function paymentDates(start: string, end: string, day: number) {
   assertIntegerRange(day, 1, 28, 'Dia mensal de pagamento')
   const dates: string[] = []
   let month = `${start.slice(0, 7)}-01`

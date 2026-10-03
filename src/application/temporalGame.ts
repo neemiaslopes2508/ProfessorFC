@@ -1,3 +1,4 @@
+import type { MatchInjuryOptions } from '../simulation/injuries'
 import { addGameDays, compareGameDates } from '../core/date'
 import type { GameDate } from '../core/date'
 import { validateId } from '../core/ids'
@@ -37,6 +38,7 @@ export interface MatchDayDependencies {
   /** Uma fonte nova por partida, reproduzível pelo ID; não compartilhar RNG global. */
   readonly randomForMatch: (matchId: MatchId) => RandomSource
   readonly engineConfig?: Partial<MatchEngineConfig>
+  readonly matchInjuryOptions?: MatchInjuryOptions
 }
 export interface TemporalOperationResult {
   readonly game: TemporalGame
@@ -123,7 +125,7 @@ function scheduledMatchInput(game: TemporalGame, matchId: MatchId, dependencies:
   const away = dependencies.getTeam(match.awayClubId, match)
   if (home.club.id !== match.homeClubId || away.club.id !== match.awayClubId) throw new Error('Escalações pertencem a clubes diferentes do confronto.')
   return { home, away, random: dependencies.randomForMatch(matchId),
-    context: { neutralVenue: false }, config: dependencies.engineConfig }
+    context: { neutralVenue: false }, config: dependencies.engineConfig, injuries: dependencies.matchInjuryOptions }
 }
 
 function previewScheduledMatch(game: TemporalGame, matchId: MatchId, dependencies: MatchDayDependencies): MatchSimulationResult {

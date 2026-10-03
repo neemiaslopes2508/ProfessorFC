@@ -13,6 +13,7 @@ import { humanTeam, playerAge } from './prototypeSession'
 import type { PrototypeSession } from './prototypeSession'
 import { playerOverall } from './teamOverview'
 import { activeContract, clubPayroll } from './contractLifecycle'
+import { financialHealth } from './financialHealth'
 
 function update(session: PrototypeSession, market: TransferMarket): PrototypeSession {
   return Object.freeze({ ...session, market: Object.freeze({ listedPlayerIds: Object.freeze([...market.listedPlayerIds]), negotiations: Object.freeze([...market.negotiations]), history: Object.freeze([...market.history]), contracts: Object.freeze([...market.contracts]) }) })
@@ -23,12 +24,13 @@ function lookup(session: PrototypeSession, playerId: PlayerId) {
   if (!seller || !player || player.clubId !== seller.club.id || !seller.club.playerIds.includes(playerId)) throw new Error('Jogador ou clube vendedor inexistente/inconsistente.')
   return { seller, player }
 }
-function budget(session: PrototypeSession, clubId: ClubId, cents: number) {
+function budget(session: PrototypeSession, clubId: ClubId, cents: number, projectedPayroll?: number) {
   const fee = createMoneyFromCents(cents)
   assertNonNegativeMoney(fee, 'Proposta')
   const team = session.teams.find(team => team.club.id === clubId)
   if (!team) throw new Error('Clube comprador inexistente.')
   if (fee.cents > team.club.finances.transferBudget.cents) throw new Error('Orçamento de transferências insuficiente.')
+  if (fee.cents > financialHealth(session, clubId, projectedPayroll).availableTransferBudget) throw new Error('Orçamento disponível insuficiente: o caixa deve preservar a reserva salarial; compras são bloqueadas em situação crítica.')
   return fee
 }
 function negotiation(session: PrototypeSession, id: string) {
@@ -63,7 +65,9 @@ export function contractPayroll(session: PrototypeSession, playerId: PlayerId, c
 }
 function validateContractPayroll(session: PrototypeSession, playerId: PlayerId, clubId: ClubId, salaryCents: number) {
   assertNonNegativeMoney(createMoneyFromCents(salaryCents), 'Salário')
-  if (contractPayroll(session, playerId, clubId, salaryCents).total > session.teams.find(team => team.club.id === clubId)!.club.finances.wageBudget.cents) throw new Error('Orçamento salarial insuficiente para a nova folha.')
+  const payroll = contractPayroll(session, playerId, clubId, salaryCents)
+  if (payroll.delta > 0 && payroll.total > payroll.budget) throw new Error('Orçamento salarial insuficiente. Não há espaço suficiente na folha salarial.')
+  if (payroll.delta > 0 && financialHealth(session, clubId, payroll.total).status === 'CRITICAL') throw new Error('Situação financeira crítica: não é possível aumentar a folha salarial.')
 }
 export function offerPlayerContract(session: PrototypeSession, id: string, terms: ContractTerms): PrototypeSession {
   const value = negotiation(session, id)
@@ -136,7 +140,7 @@ export function respondTransfer(session: PrototypeSession, id: string, action: '
     assertNonNegativeMoney(counterFee, 'Contraproposta')
     const buyer = session.teams.find(team => team.club.id === value.buyingClubId)
     if (!buyer) throw new Error('Clube comprador inexistente.')
-    const accepts = cents <= buyer.club.finances.transferBudget.cents && cents <= Math.round(marketAskingFee(session, value.playerId).cents * TRANSFER_CONFIG.cpuCounterLimitBasisPoints / 10000)
+    const accepts = cents <= financialHealth(session, buyer.club.id).availableTransferBudget && cents <= Math.round(marketAskingFee(session, value.playerId).cents * TRANSFER_CONFIG.cpuCounterLimitBasisPoints / 10000)
     return replace(session, { ...value, counterFee, offeredFee: accepts ? counterFee : value.offeredFee, status: accepts ? 'CLUB_ACCEPTED' : 'REJECTED', contractOffer: accepts ? evaluateContract(playerContractExpectations(session, value.playerId, value.buyingClubId), playerContractExpectations(session, value.playerId, value.buyingClubId)) : undefined })
   }
   if (human === value.buyingClubId && (value.status !== 'COUNTERED' || !value.counterFee)) throw new Error('Nenhuma contraproposta disponível.')
@@ -156,7 +160,7 @@ export function refreshTransferMarket(session: PrototypeSession): PrototypeSessi
     const { seller } = lookup(next, playerId)
     if (next.market.negotiations.some(item => item.playerId === playerId && ['PENDING', 'COUNTERED', 'CLUB_ACCEPTED'].includes(item.status))) continue
     const cents = Math.round(marketAskingFee(next, playerId).cents * TRANSFER_CONFIG.cpuOfferBasisPoints / 10000)
-    const buyer = next.teams.filter(team => team.club.id !== seller.club.id && team.club.finances.transferBudget.cents >= cents).sort((a, b) => b.club.reputation - a.club.reputation || a.club.id.localeCompare(b.club.id))[0]
+    const buyer = next.teams.filter(team => team.club.id !== seller.club.id && financialHealth(next, team.club.id).availableTransferBudget >= cents).sort((a, b) => b.club.reputation - a.club.reputation || a.club.id.localeCompare(b.club.id))[0]
     if (!buyer) continue
     const value: TransferNegotiation = Object.freeze({ negotiationId: `negotiation-${next.market.negotiations.length + 1}`, playerId, buyingClubId: buyer.club.id, sellingClubId: seller.club.id, offeredFee: budget(next, buyer.club.id, cents), status: 'PENDING' })
     next = update(next, { ...next.market, negotiations: [...next.market.negotiations, value] })
@@ -184,7 +188,7 @@ export function completeTransfer(session: PrototypeSession, id: string): Prototy
   validateContractPayroll(session, value.playerId, value.buyingClubId, terms.salaryCents)
   const { seller, player } = lookup(session, value.playerId)
   if (seller.club.id !== value.sellingClubId || value.buyingClubId === value.sellingClubId) throw new Error('Clubes da transferência inconsistentes.')
-  const fee = budget(session, value.buyingClubId, value.offeredFee.cents)
+  const fee = budget(session, value.buyingClubId, value.offeredFee.cents, contractPayroll(session, value.playerId, value.buyingClubId, terms.salaryCents).total)
   const buyer = session.teams.find(team => team.club.id === value.buyingClubId)!
   if (buyer.players.some(item => item.id === player.id) || buyer.club.playerIds.includes(player.id)) throw new Error('Jogador duplicado no comprador.')
   const sellerLineup = removeFromLineup(seller, player.id)
@@ -205,7 +209,11 @@ export function completeTransfer(session: PrototypeSession, id: string): Prototy
   const contract = createContract({ id: `transfer-contract-${id}` as ContractId, playerId: player.id, clubId: buyer.club.id, startDate: date, endDate: contractEndDate(date, terms.years), salary: createMoneyFromCents(terms.salaryCents), squadRole: terms.squadRole, status: 'ACTIVE' })
   const market: TransferMarket = { ...session.market, listedPlayerIds: session.market.listedPlayerIds.filter(id => id !== player.id), negotiations: session.market.negotiations.map(item => Object.freeze({ ...item, status: item.negotiationId === id ? 'COMPLETED' as const : item.playerId === player.id && ['PENDING', 'COUNTERED', 'CLUB_ACCEPTED'].includes(item.status) ? 'CANCELLED' as const : item.status })),
     history: [...session.market.history, Object.freeze({ negotiationId: id, playerId: player.id, fromClubId: seller.club.id, toClubId: buyer.club.id, fee, date })], contracts: [...session.market.contracts.map(item => item.id === oldContract?.id ? createContract({ ...item, status: 'TERMINATED' }) : item), contract] }
-  return update(Object.freeze({ ...session, teams: Object.freeze(teams), starterSlots: undefined }), market)
+  const financialTransactions = Object.freeze([...session.financialTransactions,
+    Object.freeze({ id: `purchase-${id}`, type: 'PLAYER_PURCHASE' as const, clubId: buyer.club.id, date, amount: fee, playerId: player.id, transferId: id, description: `Contratação de ${player.displayName} · ${seller.club.name}` }),
+    Object.freeze({ id: `sale-${id}`, type: 'PLAYER_SALE' as const, clubId: seller.club.id, date, amount: fee, playerId: player.id, transferId: id, description: `Venda de ${player.displayName} · ${buyer.club.name}` }),
+  ])
+  return update(Object.freeze({ ...session, teams: Object.freeze(teams), starterSlots: undefined, financialTransactions }), market)
 }
 
 export interface MarketFilters { name: string; position: string; club: string; minAge?: number; maxAge?: number; minOverall?: number; maxValueCents?: number; order: 'name' | 'age' | 'overall' | 'value' }

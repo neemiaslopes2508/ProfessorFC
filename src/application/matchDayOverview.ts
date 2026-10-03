@@ -1,6 +1,6 @@
 import type { MatchId } from '../core/ids'
 import { createDevelopmentFixture } from '../data/fixtures/development'
-import { developmentMatchAtmosphere } from '../data/fixtures/matchDay'
+import { matchStadiumAttendance } from './stadiumManagement'
 import { getLeagueStandings } from '../competitions'
 import type { SimulationTeam } from '../simulation'
 import { playerOverall } from './teamOverview'
@@ -26,9 +26,8 @@ export function matchDayOverview(session: PrototypeSession, matchId: MatchId) {
   const home = session.teams.find(team => team.club.id === match.homeClubId)
   const away = session.teams.find(team => team.club.id === match.awayClubId)
   if (!home || !away) throw new Error('Equipe da partida ausente da sessão.')
-  const rounds = Math.max(...edition.league.fixtures.map(fixture => fixture.round))
   return { match, competitionName: competition?.name ?? 'Competição', home: teamView(home), away: teamView(away),
-    atmosphere: developmentMatchAtmosphere(home.club, away.club, match.round, rounds, match.id) }
+    atmosphere: matchStadiumAttendance(session, match.id) }
 }
 
 export type MatchDayOverview = ReturnType<typeof matchDayOverview>

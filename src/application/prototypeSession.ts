@@ -1,8 +1,28 @@
+import { collectCompetitionInjuries, registerMatchInjuries, nextInjuryDate, processInjuryDate } from './injuryLifecycle'
+import { nextTrainingDate, processTrainingDate } from './playerDevelopment'
+import type { TrainingCycle, TrainingPlan } from './playerDevelopment'
+import { generateAcademyIntake, nextAcademyDate } from './academy'
+import type { AcademyRecord } from './academy'
+import type { Injury } from '../domain/players/injury'
+import type { MatchInjuryOptions } from '../simulation/injuries'
+import { createDevelopmentFacilities, DEVELOPMENT_FACILITY_CONFIG } from '../finance/facilities'
+import type { Facility, FacilityConfig } from '../finance/facilities'
+import { nextFacilityDate, processFacilityDate } from './clubFacilities'
 import type { ClubId, ContractId, MatchId, PlayerId } from '../core/ids'
+import { createDevelopmentStadiums } from '../data/fixtures/stadiums'
+import type { Stadium, StadiumAttendance } from '../finance/stadium'
+import { STADIUM_EXPANSION_CONFIG } from '../finance/stadium'
+import type { StadiumExpansionConfig } from '../finance/stadium'
+import { lockMatchAdmission } from './stadiumManagement'
 import { createContract } from '../domain/contracts'
 import { createMoneyFromCents } from '../core/money'
 import { nextContractDate, processContractDate } from './contractLifecycle'
-import type { WageTransaction } from './contractLifecycle'
+import type { FinanceTransaction } from '../finance/types'
+import type { CommercialState } from '../finance/sponsorship'
+import { createCommercialState, evaluateCommercialSeason, processCommercialDate, refreshCommercialOffers } from './commercial'
+import { createDevelopmentRevenueConfig } from '../finance/revenueConfig'
+import type { SeasonRevenueConfig } from '../finance/revenueConfig'
+import { nextSponsorshipDate, processSponsorship, settleCompetitionRevenue } from './seasonRevenue'
 import { createSeededRandomSource } from '../core/random'
 import { assertDate } from '../core/validation'
 import { assertIntegerRange } from '../core/validation'
@@ -22,12 +42,26 @@ import type { TemporalGame, MatchDayDependencies } from './temporalGame'
 
 export interface PresentedMatch { readonly matchId: MatchId; readonly result: MatchSimulationResult }
 export interface PrototypeSession {
+  readonly injuries: readonly Injury[]
+  readonly trainingPlans: readonly TrainingPlan[]
+  readonly trainingCycles: readonly TrainingCycle[]
+  readonly trainingHistory: readonly import('./playerDevelopment').TrainingChange[]
+  readonly academy: readonly AcademyRecord[]
+  readonly academyWindows: readonly string[]
+  readonly matchInjuryOptions?: MatchInjuryOptions
   readonly careerSeed: number
   readonly market: TransferMarket
   readonly game: TemporalGame
   readonly teams: readonly SimulationTeam[]
   readonly freeAgents: readonly Player[]
-  readonly financialTransactions: readonly WageTransaction[]
+  readonly financialTransactions: readonly FinanceTransaction[]
+  readonly seasonRevenue: SeasonRevenueConfig
+  readonly commercial: CommercialState
+  readonly stadiums: readonly Stadium[]
+  readonly stadiumExpansionConfig: StadiumExpansionConfig
+  readonly matchAdmissions: readonly StadiumAttendance[]
+  readonly facilities: readonly Facility[]
+  readonly facilityConfig: FacilityConfig
   readonly starterSlots?: readonly (PlayerId | undefined)[]
   readonly liveMatch?: MatchSnapshot
   readonly pendingMatch?: PresentedMatch
@@ -69,7 +103,8 @@ export function startPrototype(clubId: ClubId, careerSeed = 2026): PrototypeSess
   const league = createLeagueSeason(data.competitions.getAll()[0], data.competitionSeasons.getAll()[0])
   const schedule = createSeasonSchedule(league, { seasonStartDate: '2026-04-01', firstRoundDate: '2026-04-05', daysBetweenRounds: 7 })
   const contracts = teams.flatMap(team => team.players.map((player, index) => createContract({ id: `dev-contract-${player.id}` as ContractId, playerId: player.id, clubId: team.club.id, startDate: '2026-01-01', endDate: player.id === team.lineup.bench.at(-1) ? '2026-04-02' : '2027-04-01', salary: createMoneyFromCents(300000 + index * 10000), squadRole: 'ROTATION', status: 'ACTIVE' })))
-  return Object.freeze({ careerSeed, market: Object.freeze({ ...EMPTY_TRANSFER_MARKET, contracts: Object.freeze(contracts) }), game: createTemporalGame('2026-03-31', [{ league, schedule }], clubId), teams: Object.freeze(teams), freeAgents: Object.freeze([]), financialTransactions: Object.freeze([]) })
+  const session = Object.freeze({ injuries: Object.freeze([]), trainingPlans: Object.freeze([]), trainingCycles: Object.freeze([]), trainingHistory: Object.freeze([]), academy: Object.freeze([]), academyWindows: Object.freeze([]), careerSeed, market: Object.freeze({ ...EMPTY_TRANSFER_MARKET, contracts: Object.freeze(contracts) }), game: createTemporalGame('2026-03-31', [{ league, schedule }], clubId), teams: Object.freeze(teams), freeAgents: Object.freeze([]), financialTransactions: Object.freeze([]), seasonRevenue: createDevelopmentRevenueConfig(clubs, data.competitions.getAll()[0]), stadiums: createDevelopmentStadiums(clubs), stadiumExpansionConfig: STADIUM_EXPANSION_CONFIG, matchAdmissions: Object.freeze([]), facilities: createDevelopmentFacilities(clubs), facilityConfig: DEVELOPMENT_FACILITY_CONFIG })
+  return Object.freeze({ ...session, commercial: createCommercialState(session) })
 }
 export function humanTeam(session: PrototypeSession): SimulationTeam {
   const team = session.teams.find(team => team.club.id === session.game.humanClubId)
@@ -130,10 +165,11 @@ export function moveTeamPlayer(session: PrototypeSession, playerId: PlayerId, ta
   if (sourceSlot === targetSlot) return session
   if (sourceSlot < 0 && !team.lineup.bench.includes(playerId)) throw new Error('Escolha um titular ou jogador do banco.')
   const displaced = slots[targetSlot]
+  const displacedAvailable = !!displaced && team.players.some(player => player.id === displaced && player.status === 'AVAILABLE')
   slots[targetSlot] = playerId
   let bench = [...team.lineup.bench]
   if (sourceSlot >= 0) slots[sourceSlot] = displaced
-  else bench = bench.flatMap(id => id === playerId ? displaced ? [displaced] : [] : [id])
+  else bench = bench.flatMap(id => id === playerId ? displacedAvailable ? [displaced!] : [] : [id])
   const lineup = lineupFromSlots(slots, team.tactics.formation, bench)
   const validation = validateTeamSelection(lineup, team.tactics, team)
   if (!validation.valid) throw new Error(`Troca não permitida: ${validation.errors.map(error => error.message).join(' ')}`)
@@ -152,7 +188,7 @@ export function setStarter(session: PrototypeSession, slot: number, playerId?: P
     const positions = slots.flatMap((position, index) => { const id = chosen[index]; return id ? [{ position, playerId: id }] : [] })
     const starters = positions.map(entry => entry.playerId)
     const old = starterSlots(session)[slot]
-    const bench = [...team.lineup.bench.filter(id => !starters.includes(id)), ...(old && !starters.includes(old) && !team.lineup.bench.includes(old) ? [old] : [])]
+    const bench = [...team.lineup.bench.filter(id => !starters.includes(id)), ...(old && team.players.some(player => player.id === old && player.status === 'AVAILABLE') && !starters.includes(old) && !team.lineup.bench.includes(old) ? [old] : [])]
     const draft = { startingPlayers: starters, bench, positions }
     return { ...team, lineup: draft }
   })
@@ -166,8 +202,10 @@ export function prototypeMatchDependencies(session: PrototypeSession): MatchDayD
     getTeam: clubId => {
       const team = session.teams.find(team => team.club.id === clubId)
       if (!team) throw new Error('Clube sem escalação nesta sessão.')
+      if (clubId !== session.game.humanClubId && !validateTeamSelection(team.lineup, team.tactics, team).valid) return Object.freeze({ ...team, lineup: initialLineup(team.club, team.players, team.tactics) })
       return team
     },
+    matchInjuryOptions: session.matchInjuryOptions ? { ...session.matchInjuryOptions, forced: session.injuries.length ? undefined : session.matchInjuryOptions.forced } : undefined,
     randomForMatch: matchId => {
       const edition = session.game.competitions.find(({ league }) => league.fixtures.some(fixture => fixture.id === matchId))
       const fixture = edition?.league.fixtures.find(fixture => fixture.id === matchId)
@@ -179,14 +217,23 @@ export function prototypeMatchDependencies(session: PrototypeSession): MatchDayD
 export function advancePrototype(session: PrototypeSession): PrototypeSession {
   if (session.liveMatch) throw new Error('Conclua a partida em andamento antes de avançar o calendário.')
   if (session.pendingMatch) throw new Error('Clique em Continuar para confirmar o resultado antes de avançar.')
-  const processed = processContractDate(session, session.game.calendar.currentDate)
+  const processed = generateAcademyIntake(processTrainingDate(processInjuryDate(processFacilityDate(processCommercialDate(processSponsorship(processContractDate(session, session.game.calendar.currentDate)))))))
   const current = advanceGameTo(processed.game, processed.game.calendar.currentDate, prototypeMatchDependencies(processed))
-  const base = Object.freeze({ ...processed, game: current.game })
+  let currentSession = Object.freeze({ ...processed, game: current.game })
+  if (current.processedEvents.some(event => event.type === 'SEASON_START')) currentSession = refreshCommercialOffers(currentSession)
+  let settled = settleCompetitionRevenue(currentSession)
+  for (const entry of settled.game.competitions) settled = evaluateCommercialSeason(settled, entry.league.season.id)
+  const base = collectCompetitionInjuries(settled)
   if (current.blockedEvents.length) return base
-  const date = [base.game.calendar.nextPendingEvent()?.date, nextContractDate(base)].filter((date): date is string => !!date).sort()[0]
+  const date = [base.game.calendar.nextPendingEvent()?.date, nextContractDate(base), nextSponsorshipDate(base), nextFacilityDate(base), nextInjuryDate(base), nextTrainingDate(base), nextAcademyDate(base)].filter((date): date is string => !!date).sort()[0]
   if (!date) return base
-  const evolved = processContractDate(base, date)
-  return Object.freeze({ ...evolved, game: advanceGameTo(base.game, date, prototypeMatchDependencies(evolved)).game })
+  const evolved = processTrainingDate(generateAcademyIntake(processInjuryDate(processFacilityDate(processCommercialDate(processSponsorship(processContractDate(base, date), date), date), date), date), date), date)
+  const afterDay = advanceGameTo(base.game, date, prototypeMatchDependencies(evolved))
+  let advanced = Object.freeze({ ...evolved, game: afterDay.game })
+  if (afterDay.processedEvents.some(event => event.type === 'SEASON_START')) advanced = refreshCommercialOffers(advanced)
+  let final = settleCompetitionRevenue(advanced)
+  for (const entry of final.game.competitions) final = evaluateCommercialSeason(final, entry.league.season.id)
+  return collectCompetitionInjuries(final)
 }
 export function playPrototypeMatch(session: PrototypeSession): PrototypeSession {
   if (session.liveMatch) throw new Error('A partida já está em andamento; use seus controles de avanço.')
@@ -196,13 +243,15 @@ export function playPrototypeMatch(session: PrototypeSession): PrototypeSession 
   const action = getPendingHumanActions(session.game)[0]
   if (!action) throw new Error('Avance o calendário até sua próxima partida.')
   const result = previewHumanMatch(session.game, action.matchId, prototypeMatchDependencies(session))
-  return Object.freeze({ ...session, pendingMatch: Object.freeze({ matchId: action.matchId, result }) })
+  return Object.freeze({ ...registerMatchInjuries(lockMatchAdmission(session, action.matchId), action.matchId, result.events, session.game.calendar.currentDate), pendingMatch: Object.freeze({ matchId: action.matchId, result }) })
 }
 export function continuePrototypeMatch(session: PrototypeSession): PrototypeSession {
   if (!session.pendingMatch) return session
   const { matchId, result } = session.pendingMatch
   const game = completeHumanMatch(session.game, matchId, result, prototypeMatchDependencies(session)).game
-  return Object.freeze({ ...session, game, lastMatch: session.pendingMatch, pendingMatch: undefined })
+  let settled = settleCompetitionRevenue(Object.freeze({ ...session, game, lastMatch: session.pendingMatch, pendingMatch: undefined }))
+  for (const entry of settled.game.competitions) settled = evaluateCommercialSeason(settled, entry.league.season.id)
+  return collectCompetitionInjuries(settled)
 }
 export function prototypeView(session: PrototypeSession) {
   const { league, schedule } = session.game.competitions[0]

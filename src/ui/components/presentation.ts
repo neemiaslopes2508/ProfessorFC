@@ -1,4 +1,6 @@
 export const mentalityLabels = { DEFENSIVE: 'Defensiva', BALANCED: 'Equilibrada', ATTACKING: 'Ofensiva' }
+export const financialHealthLabels = { EXCELLENT: 'Excelente', HEALTHY: 'Saudável', WARNING: 'Atenção', CRITICAL: 'Crítica' }
+export const financeTypeLabels = { PLAYER_WAGES: 'Salários', PLAYER_PURCHASE: 'Compra de jogador', PLAYER_SALE: 'Venda de jogador', MATCH_TICKETS: 'Bilheteria', SPONSORSHIP: 'Patrocínio mensal', SPONSOR_SIGNING_BONUS: 'Bônus de assinatura', SPONSOR_OBJECTIVE_BONUS: 'Bônus por meta', COMPETITION_PRIZE: 'Premiações', FACILITY_UPGRADE: 'Investimento em estrutura', FACILITY_MAINTENANCE: 'Manutenção das instalações', STADIUM_EXPANSION: 'Expansão do estádio', STADIUM_MAINTENANCE: 'Manutenção do estádio', MERCHANDISING: 'Loja Oficial' }
 export const squadRoleLabels = { STAR_PLAYER: 'Craque', IMPORTANT: 'Importante', ROTATION: 'Rotação', BACKUP: 'Reserva', PROSPECT: 'Promessa' }
 export const styleLabels = { POSSESSION: 'Posse', BALANCED: 'Equilibrado', COUNTER_ATTACK: 'Contra-ataque', PRESSING: 'Pressão' }
 import type { Position } from '../../domain/players'

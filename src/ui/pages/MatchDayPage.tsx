@@ -8,7 +8,7 @@ import { advanceMatchDayScene, MATCH_DAY_TIMING } from '../components/matchDaySc
 import type { MatchDayScene } from '../components/matchDayScenes'
 import { ClubCrest } from '../components/ClubMark'
 import { clubIdentity } from '../components/clubIdentity'
-import { dateLabel, mentalityLabels, positionLabel, styleLabels } from '../components/presentation'
+import { dateLabel, money, mentalityLabels, positionLabel, styleLabels } from '../components/presentation'
 import { ValidationPanel } from '../components/ValidationPanel'
 import { MatchPitch } from '../components/MatchPitch'
 import { MatchScoreboard } from '../components/MatchScoreboard'
@@ -54,7 +54,7 @@ function MatchDayExperience({ overview, session, onPlay, onLineup, onTactics }: 
       {scene === 'HUB' && <>
         <MatchScoreboard home={home.team.club} away={away.team.club} competition={competitionName} round={match.round} status="Partida pendente" />
         <div className="match-day-hub"><section className="match-day-venue">{pitch}<div className="venue-caption"><div><span className="eyebrow">Palco da partida</span><h2>{atmosphere.stadiumName}</h2></div><span>Estádio fictício</span></div></section>
-          <section className="panel match-day-plan"><span className="eyebrow">Seu plano de jogo</span><h2>{human.club.name}</h2><strong className="match-day-formation">{human.tactics.formation}</strong><p>{mentalityLabels[human.tactics.mentality]} · {styleLabels[human.tactics.style]}</p><dl><dt>Técnico humano</dt><dd>Você</dd><dt>Mandante</dt><dd>{home.team.tactics.formation}</dd><dt>Visitante</dt><dd>{away.team.tactics.formation}</dd><dt>Público estimado</dt><dd>{number.format(atmosphere.attendance)}</dd><dt>Capacidade</dt><dd>{number.format(atmosphere.capacity)}</dd><dt>Status</dt><dd>Pendente</dd></dl><p className="muted">Público fictício de desenvolvimento. Sem cálculo de receitas.</p><div className="actions"><button onClick={onLineup}>EDITAR EQUIPE</button><button onClick={onTactics}>Revisar plano tático</button></div></section>
+          <section className="panel match-day-plan"><span className="eyebrow">Seu plano de jogo</span><h2>{human.club.name}</h2><strong className="match-day-formation">{human.tactics.formation}</strong><p>{mentalityLabels[human.tactics.mentality]} · {styleLabels[human.tactics.style]}</p><dl><dt>Técnico humano</dt><dd>Você</dd><dt>Mandante</dt><dd>{home.team.tactics.formation}</dd><dt>Visitante</dt><dd>{away.team.tactics.formation}</dd><dt>Público estimado</dt><dd>{number.format(atmosphere.attendance)}</dd><dt>Capacidade</dt><dd>{number.format(atmosphere.capacity)}</dd><dt>Ocupação estimada</dt><dd>{(atmosphere.occupancy * 100).toFixed(1)}%</dd><dt>Receita estimada</dt><dd>{money(atmosphere.revenueCents)}</dd><dt>Status</dt><dd>Pendente</dd></dl><p className="muted">Público fictício de desenvolvimento. Bilheteria registrada ao confirmar o resultado.</p><div className="actions"><button onClick={onLineup}>EDITAR EQUIPE</button><button onClick={onTactics}>Revisar plano tático</button></div></section>
         </div><ValidationPanel session={session} /><MatchHighlights overview={overview} />
       </>}
       {scene === 'ARRIVAL' && <StadiumArrival club={human.club} stadiumName={atmosphere.stadiumName} />}

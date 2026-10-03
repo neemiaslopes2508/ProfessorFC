@@ -12,7 +12,7 @@ const matchId = createId('Match', 'session-test')
 function makeSession() { return new MatchSession({ ...createFixtureMatchInput(2026), matchId }) }
 
 describe('MatchSession incremental', () => {
-  it('reproduz o motor anterior e mantém determinismo independentemente do tamanho dos passos', () => {
+  it('mantém determinismo independentemente do tamanho dos passos', () => {
     const stepped = makeSession()
     const batched = makeSession()
     while (stepped.snapshot().canAdvance) stepped.advance(1)
@@ -24,7 +24,7 @@ describe('MatchSession incremental', () => {
     const result = simulateMatch(createFixtureMatchInput(2026))
     expect(stepped.toResult()).toEqual(batched.toResult())
     expect(stepped.toResult()).toEqual(result)
-    // Capturado antes da refatoração: protege também a ordem dos sorteios e os eventos.
+    // O stream isolado preserva a sequência de gameplay anterior ao sistema de lesões.
     expect(createHash('sha256').update(JSON.stringify(result)).digest('hex')).toBe('5a1b93607e42546b5a25c9957e0b6bfc8aca6fd39d4cebb2a2a2d03ced4138f5')
     function withIntervention() {
       const session = makeSession()
@@ -85,7 +85,7 @@ describe('MatchSession incremental', () => {
 
   it('coordena táticas ao vivo sem alterar o passado e confirma o resultado somente uma vez na aplicação', () => {
     let session = startPrototype(getDevelopmentClubs()[0].id)
-    session = advancePrototype(advancePrototype(session))
+    while (!prototypeView(session).pendingActions.length) session = advancePrototype(session)
     const before = session
     session = startPrototypeLiveMatch(session)
     expect(session.liveMatch).toMatchObject({ currentMinute: 0, events: [] })

@@ -1,3 +1,4 @@
+import { facilityMonthlyTotals } from './clubFacilities'
 import { expect, it } from 'vitest'
 import { getDevelopmentClubs, humanTeam, startPrototype, advancePrototype } from './prototypeSession'
 import { activeContract, clubPayroll, processContractDate, playerContractStatus } from './contractLifecycle'
@@ -32,16 +33,19 @@ it('cobra folha ativa uma vez por clube/mês, respeitando expiração e data con
   const original = startPrototype(getDevelopmentClubs()[0].id)
   const club = humanTeam(original).club
   const wages = clubPayroll(original, club.id).current
+  const structure = facilityMonthlyTotals(original, club.id)
+  const facilityBalance = structure.income - structure.maintenance
+  const sponsorship = 0 // O clube humano só recebe patrocínio após assinar uma proposta.
   const april = advancePrototype(original)
   expect(april.game.calendar.currentDate).toBe('2026-04-01')
-  expect(humanTeam(april).club.finances.cashBalance.cents).toBe(club.finances.cashBalance.cents - wages)
+  expect(humanTeam(april).club.finances.cashBalance.cents).toBe(club.finances.cashBalance.cents - wages + sponsorship + facilityBalance)
   const again = processContractDate(april, '2026-04-01')
   expect(again.financialTransactions).toEqual(april.financialTransactions)
   expect(humanTeam(again).club.finances).toEqual(humanTeam(april).club.finances)
   const may = processContractDate(april, '2026-05-01')
   const mayWages = clubPayroll(may, club.id, '2026-05-01').current
-  expect(humanTeam(may).club.finances.cashBalance.cents).toBe(club.finances.cashBalance.cents - wages - mayWages)
-  expect(may.financialTransactions.filter(item => item.clubId === club.id)).toHaveLength(2)
+  expect(humanTeam(may).club.finances.cashBalance.cents).toBe(club.finances.cashBalance.cents - wages - mayWages + sponsorship + facilityBalance)
+  expect(may.financialTransactions.filter(item => item.clubId === club.id && item.type === 'PLAYER_WAGES')).toHaveLength(2)
   const custom = processContractDate(original, '2026-04-03', 3)
   expect(custom.financialTransactions.find(item => item.clubId === club.id)?.amount.cents).toBe(clubPayroll(custom, club.id, '2026-04-03').current)
   expect(custom.financialTransactions[0].date).toBe('2026-04-03')

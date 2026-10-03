@@ -93,3 +93,7 @@ Validação manual: João Papel 10 foi contratado por R$ 509.000 após contrapro
 PayrollSummary apresenta folha mensal derivada, teto, espaço, caixa e último PLAYER_WAGES em Mercado/Elenco. Elenco acrescenta salário, fim, papel/status, filtro de contratos e alerta de vencimentos em 180 dias. Mercado inclui agentes livres no filtro de clube; estes abrem diretamente ContractNegotiation e assinam sem taxa. Toda regra temporal e financeira permanece na aplicação.
 
 Validação manual sem jogar partida: Aurora iniciou com folha de R$ 79.000 e caixa de R$ 5.000.000; 01/04 registrou a cobrança e caixa de R$ 4.921.000. Em 02/04 João Nuvem 20 tornou-se agente livre; foi contratado sem taxa por R$ 10.800/mês até 02/04/2028, com folha final de R$ 84.900 e caixa preservado.
+
+## Centro Financeiro — Fase 12A
+
+Finanças entra na navegação e Dashboard oferece caixa, folha, orçamento e VER FINANÇAS. FinancePage consome a projeção da aplicação; cards e histórico usam o formatador BRL comum. Balanço mensal tem estado positivo/negativo/neutro; indicador salarial usa meter acessível. Histórico tem filtros Todas/Receitas/Despesas e Mês atual/Temporada; categorias de maiores receitas/despesas seguem o período, com estados vazios reais. Compras/vendas/salários refletem o estado compartilhado do Mercado. Sem bibliotecas, gráficos complexos ou regras de 12B.
